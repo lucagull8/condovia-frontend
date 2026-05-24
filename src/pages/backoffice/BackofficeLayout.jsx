@@ -19,17 +19,18 @@ export default function BackofficeLayout({ children }) {
   const nav = useNavigate();
   const { utente, logout } = useAuth();
   const [open, setOpen] = useState(false);
-  const [badges, setBadges] = useState({ richieste: 0, iscrizioni: 0 });
+  const [badges, setBadges] = useState({ richieste: 0, iscrizioni: 0, wallet: 0 });
   const doLogout = () => { logout(); nav('/backoffice/login'); };
   const displayName = utente ? `${utente.nome} ${utente.cognome}` : 'Commerciale';
 
   useEffect(() => {
-    boGetDashboard().then(d => setBadges({ richieste: d.richiesteInAttesa || 0, iscrizioni: d.iscrizioniPending || 0 })).catch(() => {});
+    boGetDashboard().then(d => setBadges({ richieste: d.richiesteInAttesa || 0, iscrizioni: d.iscrizioniPending || 0, wallet: d.richiesteWalletPending || 0 })).catch(() => {});
   }, [path]);
 
   const getBadge = (to) => {
     if (to === '/backoffice/richieste') return badges.richieste;
     if (to === '/backoffice/iscrizioni') return badges.iscrizioni;
+    if (to === '/backoffice/amministratori') return badges.wallet;
     return 0;
   };
 

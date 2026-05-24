@@ -19,6 +19,7 @@ export default function BackofficeDashboard() {
     { label: 'Margine Condovia', val: `€ ${fmt(kpi.margineMese)}`, icon: TrendingUp, bg: 'linear-gradient(135deg,#6e9a6e,#3d6b3d)' },
     { label: 'Storni erogati', val: `€ ${fmt(kpi.stornoMese)}`, icon: Wallet, bg: 'linear-gradient(135deg,#6b7280,#374151)' },
     { label: 'Richieste in attesa', val: kpi.richiesteInAttesa, icon: CircleAlert, bg: 'linear-gradient(135deg,#ef4444,#b91c1c)' },
+    { label: 'Pagamenti wallet', val: kpi.richiesteWalletPending || 0, icon: Wallet, bg: 'linear-gradient(135deg,#7c3aed,#5b21b6)' },
   ] : [];
   return <>
     <div style={{ position: 'sticky', top: 0, zIndex: 10, background: '#fcfcfa', borderBottom: '1px solid var(--border)', padding: '0 28px', height: 60, display: 'flex', alignItems: 'center' }}>

@@ -13,7 +13,7 @@ export default function Condomini() {
 
   // Modal
   const [showModal, setShowModal] = useState(false);
-  const [form, setForm] = useState({ nome: '', via: '', citta: '', unita: '' });
+  const [form, setForm] = useState({ nome: '', via: '', citta: '', unita: '', codiceFiscale: '' });
   const [saving, setSaving] = useState(false);
   const [saveErr, setSaveErr] = useState('');
 
@@ -40,9 +40,9 @@ export default function Condomini() {
     if (!form.nome.trim()) { setSaveErr('Inserisci il nome del condominio.'); return; }
     setSaving(true); setSaveErr('');
     try {
-      const nuovo = await creaCondominio({ nome: form.nome, via: form.via, citta: form.citta, unita: parseInt(form.unita) || 0 });
+      const nuovo = await creaCondominio({ nome: form.nome, via: form.via, citta: form.citta, unita: parseInt(form.unita) || 0, codiceFiscale: form.codiceFiscale });
       setData(d => [...d, { ...nuovo, attivi: 0, scadenze: 0, storno: 0 }]);
-      setForm({ nome: '', via: '', citta: '', unita: '' });
+      setForm({ nome: '', via: '', citta: '', unita: '', codiceFiscale: '' });
       setShowModal(false);
     } catch (e) { setSaveErr(e.message); }
     finally { setSaving(false); }
@@ -169,6 +169,10 @@ export default function Condomini() {
                   <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: 'var(--ink-soft)', marginBottom: 6 }}>N° condomini</label>
                   <input type="number" value={form.unita} onChange={e => set('unita', e.target.value)} placeholder="Es. 32" style={inp} />
                 </div>
+              </div>
+              <div>
+                <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: 'var(--ink-soft)', marginBottom: 6 }}>Codice fiscale</label>
+                <input value={form.codiceFiscale} onChange={e => set('codiceFiscale', e.target.value)} placeholder="Es. 97012345678" style={inp} />
               </div>
 
               {saveErr && <div style={{ padding: '10px 14px', borderRadius: 10, background: 'var(--danger-bg)', border: '1px solid #e8b8a8', color: 'var(--danger)', fontSize: 13 }}>{saveErr}</div>}
