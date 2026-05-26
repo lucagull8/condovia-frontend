@@ -1,5 +1,5 @@
-import { useState, useEffect, useMemo } from 'react';
-import { StickyNote, FileText, Upload, X, Check, AlertCircle, ChevronLeft, Plus, Trash2 } from 'lucide-react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
+import { StickyNote, FileText, Upload, X, Check, AlertCircle, ChevronLeft, Plus, Trash2, RefreshCw } from 'lucide-react';
 import { Badge } from '../../components/Shared';
 import { BASE, boGetRichieste, boPatchRichiesta, boPostContratto, boGetServizi, boGetCondominiAdmin } from '../../api';
 
@@ -24,7 +24,10 @@ export default function Richieste() {
   // Modal contratto
   const [modal, setModal] = useState(null);
   const [condomini, setCondomini] = useState([]);
-  const [form, setForm] = useState({ fornitore: '', prezzo: '', commissioneCondovia: '', stornoTipo: 'fix', stornoValore: '', dataInizio: '', dataScadenza: '', condominioId: '' });
+  const [refreshing, setRefreshing] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0);
+  const doRefresh = () => { setRefreshing(true); setRefreshKey(k => k + 1); };
+  const [form, setForm] = useState({ fornitore: '', commissioneCondovia: '', stornoTipo: 'fix', stornoValore: '', dataInizio: '', dataScadenza: '', condominioId: '' });
   const [pdf, setPdf] = useState(null);
   const [pods, setPods] = useState([{ podNumber: '', pdf: null }]);
   const [saving, setSaving] = useState(false);
@@ -45,9 +48,9 @@ export default function Richieste() {
       setLoading(true);
       boGetRichieste(tab, selectedAdmin._id)
         .then(setData)
-        .finally(() => setLoading(false));
+        .finally(() => { setLoading(false); setRefreshing(false); });
     }
-  }, [tab, selectedAdmin]);
+  }, [tab, selectedAdmin, refreshKey]);
 
   // Carica tutte le richieste per la vista raggruppata
   useEffect(() => {
@@ -55,9 +58,9 @@ export default function Richieste() {
       setLoading(true);
       boGetRichieste('', '')
         .then(r => { setAllRichieste(r); })
-        .finally(() => setLoading(false));
+        .finally(() => { setLoading(false); setRefreshing(false); });
     }
-  }, [selectedAdmin]);
+  }, [selectedAdmin, refreshKey]);
 
   // Raggruppa per admin
   const adminGroups = useMemo(() => {
@@ -89,7 +92,7 @@ export default function Richieste() {
     setModal(r);
     setSaveErr('');
     setForm({
-      fornitore: '', prezzo: '', commissioneCondovia: '',
+      fornitore: '', commissioneCondovia: '',
       stornoTipo: 'fix', stornoValore: '',
       dataInizio: new Date().toISOString().split('T')[0],
       dataScadenza: new Date(Date.now() + 365 * 864e5).toISOString().split('T')[0],
@@ -117,7 +120,7 @@ export default function Richieste() {
   const margine = commNum - stornoAmm;
 
   const handleSave = async () => {
-    if (!form.fornitore || !form.prezzo || !form.dataInizio || !form.dataScadenza) {
+    if (!form.fornitore || !form.dataInizio || !form.dataScadenza) {
       setSaveErr('Compila tutti i campi obbligatori.'); return;
     }
     if (!form.condominioId) { setSaveErr('Seleziona un condominio.'); return; }
@@ -131,7 +134,6 @@ export default function Richieste() {
       fd.append('condominioId', form.condominioId);
       fd.append('servizioId', modal.servizioId);
       fd.append('fornitore', form.fornitore);
-      fd.append('prezzo', form.prezzo);
       fd.append('commissioneCondovia', form.commissioneCondovia);
       fd.append('stornoTipo', form.stornoTipo);
       fd.append('stornoValore', form.stornoValore || '0');
@@ -160,8 +162,13 @@ export default function Richieste() {
   if (!selectedAdmin) {
     return (
       <>
-        <div style={{ position: 'sticky', top: 0, zIndex: 10, background: '#fcfcfa', borderBottom: '1px solid var(--border)', padding: '0 20px', height: 60, display: 'flex', alignItems: 'center' }}>
-          <h1 style={{ fontFamily: 'Fraunces', fontWeight: 500, fontSize: 'clamp(18px,3vw,24px)', margin: 0 }}>Richieste per amministratore</h1>
+        <div style={{ position: 'sticky', top: 0, zIndex: 10, background: '#fcfcfa', borderBottom: '1px solid var(--border)', padding: '0 20px', height: 60, display: 'flex', alignItems: 'center', gap: 10 }}>
+          <h1 style={{ fontFamily: 'Fraunces', fontWeight: 500, fontSize: 'clamp(18px,3vw,24px)', margin: 0, flex: 1 }}>Richieste per amministratore</h1>
+          <button onClick={doRefresh} disabled={refreshing} title="Aggiorna" style={{ display: 'flex', alignItems: 'center', gap: 6, height: 34, padding: '0 12px', borderRadius: 8, border: '1.5px solid var(--border)', background: 'transparent', fontSize: 13, cursor: 'pointer', color: 'var(--ink-soft)' }}>
+            <RefreshCw size={14} style={{ animation: refreshing ? 'spin 1s linear infinite' : 'none' }} />
+            {refreshing ? 'Aggiorno…' : 'Aggiorna'}
+          </button>
+          <style>{`@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}`}</style>
         </div>
         <div style={{ padding: 20 }}>
           {loading ? (
@@ -215,9 +222,13 @@ export default function Richieste() {
         <button onClick={() => { setSelectedAdmin(null); setTab(''); }} style={{ display: 'flex', alignItems: 'center', gap: 4, height: 34, padding: '0 12px', borderRadius: 8, border: '1.5px solid var(--border)', background: 'transparent', fontSize: 13, cursor: 'pointer', color: 'var(--ink-soft)' }}>
           <ChevronLeft size={14} /> Indietro
         </button>
-        <h1 style={{ fontFamily: 'Fraunces', fontWeight: 500, fontSize: 'clamp(16px,3vw,22px)', margin: 0 }}>
+        <h1 style={{ fontFamily: 'Fraunces', fontWeight: 500, fontSize: 'clamp(16px,3vw,22px)', margin: 0, flex: 1 }}>
           {selectedAdmin.nome} {selectedAdmin.cognome}
         </h1>
+        <button onClick={doRefresh} disabled={refreshing} title="Aggiorna" style={{ display: 'flex', alignItems: 'center', gap: 6, height: 34, padding: '0 12px', borderRadius: 8, border: '1.5px solid var(--border)', background: 'transparent', fontSize: 13, cursor: 'pointer', color: 'var(--ink-soft)' }}>
+          <RefreshCw size={14} style={{ animation: refreshing ? 'spin 1s linear infinite' : 'none' }} />
+          {refreshing ? 'Aggiorno…' : 'Aggiorna'}
+        </button>
       </div>
       <div style={{ padding: 20, display: 'flex', flexDirection: 'column', gap: 16 }}>
         {/* Filtro stato */}
@@ -318,16 +329,10 @@ export default function Richieste() {
                 </div>
               )}
 
-              {/* Prezzo + Commissione */}
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
-                <div>
-                  <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: 'var(--ink-soft)', marginBottom: 4 }}>Prezzo annuo fornitore (€) *</label>
-                  <input type="number" value={form.prezzo} onChange={e => setF('prezzo', e.target.value)} placeholder="35000" style={inp} />
-                </div>
-                <div>
-                  <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: 'var(--ink-soft)', marginBottom: 4 }}>Commissione Condovia (€) *</label>
-                  <input type="number" value={form.commissioneCondovia} onChange={e => setF('commissioneCondovia', e.target.value)} placeholder="Es. 500" style={inp} />
-                </div>
+              {/* Commissione Condovia */}
+              <div>
+                <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: 'var(--ink-soft)', marginBottom: 4 }}>Commissione Condovia (€) *</label>
+                <input type="number" value={form.commissioneCondovia} onChange={e => setF('commissioneCondovia', e.target.value)} placeholder="Es. 500" style={inp} />
               </div>
 
               {/* Storno */}

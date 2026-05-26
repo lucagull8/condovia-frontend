@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Search, ChevronLeft, Building2, FileText, Wallet, User, Plus, Upload, X, Check, ExternalLink, Trash2 } from 'lucide-react';
+import { Search, ChevronLeft, Building2, FileText, Wallet, User, Plus, Upload, X, Check, ExternalLink, Trash2, RefreshCw } from 'lucide-react';
 import { Badge } from '../../components/Shared';
 import {
   boGetAmministratori, boGetAmministratore,
@@ -21,6 +21,7 @@ const COLORI = [
 export default function Amministratori() {
   const [list, setList] = useState([]);
   const [ld, setLd] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const [q, setQ] = useState('');
   const [selected, setSelected] = useState(null); // admin object
   const [tab, setTab] = useState('anagrafica');
@@ -46,9 +47,11 @@ export default function Amministratori() {
   const [pagaFile, setPagaFile] = useState(null);
   const [pagaSaving, setPagaSaving] = useState(false);
 
-  useEffect(() => {
-    boGetAmministratori().then(setList).finally(() => setLd(false));
-  }, []);
+  const loadList = () => {
+    setLd(true);
+    boGetAmministratori().then(setList).finally(() => { setLd(false); setRefreshing(false); });
+  };
+  useEffect(() => { loadList(); }, []);
 
   const selectAdmin = async (admin) => {
     setSelected(admin);
@@ -148,6 +151,11 @@ export default function Amministratori() {
         <div style={{ position: 'sticky', top: 0, zIndex: 10, background: '#fcfcfa', borderBottom: '1px solid var(--border)', padding: '0 20px', height: 60, display: 'flex', alignItems: 'center', gap: 12 }}>
           <h1 style={{ fontFamily: 'Fraunces', fontWeight: 500, fontSize: 'clamp(18px,3vw,24px)', margin: 0, flex: 1 }}>Amministratori</h1>
           <span style={{ fontSize: 12, color: 'var(--ink-soft)' }}>{list.length} attivi</span>
+          <button onClick={() => { setRefreshing(true); loadList(); }} disabled={refreshing} title="Aggiorna" style={{ display: 'flex', alignItems: 'center', gap: 6, height: 34, padding: '0 12px', borderRadius: 8, border: '1.5px solid var(--border)', background: 'transparent', fontSize: 13, cursor: 'pointer', color: 'var(--ink-soft)' }}>
+            <RefreshCw size={14} style={{ animation: refreshing ? 'spin 1s linear infinite' : 'none' }} />
+            {refreshing ? 'Aggiorno…' : 'Aggiorna'}
+          </button>
+          <style>{`@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}`}</style>
         </div>
         <div style={{ padding: 20, display: 'flex', flexDirection: 'column', gap: 16 }}>
           <div style={{ position: 'relative' }}>
