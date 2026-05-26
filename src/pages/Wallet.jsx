@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Wallet as WI, Eye, EyeOff, ArrowDown, ArrowUp, Bell, Check, X, FileText, ExternalLink } from 'lucide-react';
+import { Wallet as WI, Eye, EyeOff, ArrowDown, ArrowUp, Bell, Check, X, FileText, ExternalLink, RefreshCw } from 'lucide-react';
 import { Header, Footer } from '../components/Shared';
 import { useAuth } from '../context/AuthContext';
 import { getWallet, richiediPagamento, getWalletRichieste, getWalletRicevutaUrl, BASE } from '../api';
@@ -13,6 +13,7 @@ export default function WalletPage() {
   const [w, setW] = useState({ saldo: 0, movimenti: [] });
   const [richieste, setRichieste] = useState([]);
   const [ld, setLd] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
 
   // Modale richiesta pagamento
   const [showModal, setShowModal] = useState(false);
@@ -21,11 +22,14 @@ export default function WalletPage() {
   const [sendErr, setSendErr] = useState('');
   const [sent, setSent] = useState(false);
 
-  useEffect(() => {
+  const loadData = () => {
+    setLd(true);
     Promise.all([getWallet(), getWalletRichieste()])
       .then(([wData, rData]) => { setW(wData); setRichieste(rData); })
-      .finally(() => setLd(false));
-  }, []);
+      .finally(() => { setLd(false); setRefreshing(false); });
+  };
+
+  useEffect(() => { loadData(); }, []);
 
   const { saldo, movimenti } = w;
   const ent = movimenti.filter(m => m.tipo === 'in').reduce((a, m) => a + m.importo, 0);
@@ -66,7 +70,14 @@ export default function WalletPage() {
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       <Header />
       <div style={{ maxWidth: 1200, margin: '0 auto', width: '100%', padding: '32px 24px 60px' }}>
-        <Link to="/home" style={{ fontSize: 13, color: 'var(--ink-soft)', marginBottom: 20, display: 'inline-block' }}>← Torna alla home</Link>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20, flexWrap: 'wrap', gap: 10 }}>
+          <Link to="/home" style={{ fontSize: 13, color: 'var(--ink-soft)' }}>← Torna alla home</Link>
+          <button onClick={() => { setRefreshing(true); loadData(); }} disabled={refreshing} style={{ display: 'flex', alignItems: 'center', gap: 6, height: 34, padding: '0 12px', borderRadius: 8, border: '1.5px solid var(--border)', background: 'transparent', fontSize: 13, cursor: 'pointer', color: 'var(--ink-soft)' }}>
+            <RefreshCw size={13} style={{ animation: refreshing ? 'spin 1s linear infinite' : 'none' }} />
+            {refreshing ? 'Aggiorno…' : 'Aggiorna'}
+          </button>
+          <style>{`@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}`}</style>
+        </div>
         <h1 style={{ fontFamily: 'Fraunces', fontWeight: 500, fontSize: 'clamp(36px,5vw,56px)', letterSpacing: '-0.025em', margin: '0 0 32px' }}>
           Wallet<span style={{ color: 'var(--copper)' }}>.</span>
         </h1>

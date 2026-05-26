@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, Building2, Plus, X, Check } from 'lucide-react';
+import { Search, Building2, Plus, X, Check, RefreshCw } from 'lucide-react';
 import { Header, Footer, Badge } from '../components/Shared';
 import { getCondomini, creaCondominio } from '../api';
 
@@ -17,7 +17,12 @@ export default function Condomini() {
   const [saving, setSaving] = useState(false);
   const [saveErr, setSaveErr] = useState('');
 
-  useEffect(() => { getCondomini().then(setData).finally(() => setLoading(false)); }, []);
+  const [refreshing, setRefreshing] = useState(false);
+  const loadData = () => {
+    setLoading(true);
+    getCondomini().then(setData).finally(() => { setLoading(false); setRefreshing(false); });
+  };
+  useEffect(() => { loadData(); }, []);
 
   const filtered = useMemo(() => {
     let r = data.filter(c => {
@@ -63,9 +68,16 @@ export default function Condomini() {
               {loading ? '…' : `${data.length} edifici gestiti`} · Roma e provincia
             </p>
           </div>
-          <button onClick={() => setShowModal(true)} style={{ display: 'flex', alignItems: 'center', gap: 8, height: 44, padding: '0 18px', borderRadius: 12, border: 0, background: 'linear-gradient(180deg,#c8843f 0%,#a06525 100%)', boxShadow: '0 0 0 1px rgba(110,62,21,.55)', color: '#fff', fontSize: 14, fontWeight: 600 }}>
-            <Plus size={16} /> Aggiungi condominio
-          </button>
+          <div style={{ display: 'flex', gap: 8 }}>
+            <button onClick={() => { setRefreshing(true); loadData(); }} disabled={refreshing} style={{ display: 'flex', alignItems: 'center', gap: 6, height: 44, padding: '0 14px', borderRadius: 12, border: '1.5px solid var(--border)', background: 'transparent', fontSize: 13, cursor: 'pointer', color: 'var(--ink-soft)' }}>
+              <RefreshCw size={14} style={{ animation: refreshing ? 'spin 1s linear infinite' : 'none' }} />
+              {refreshing ? 'Aggiorno…' : 'Aggiorna'}
+            </button>
+            <style>{`@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}`}</style>
+            <button onClick={() => setShowModal(true)} style={{ display: 'flex', alignItems: 'center', gap: 8, height: 44, padding: '0 18px', borderRadius: 12, border: 0, background: 'linear-gradient(180deg,#c8843f 0%,#a06525 100%)', boxShadow: '0 0 0 1px rgba(110,62,21,.55)', color: '#fff', fontSize: 14, fontWeight: 600 }}>
+              <Plus size={16} /> Aggiungi condominio
+            </button>
+          </div>
         </div>
 
         {/* Filters */}
