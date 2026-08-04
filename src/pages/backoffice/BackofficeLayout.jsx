@@ -79,12 +79,13 @@ export default function BackofficeLayout({ children }) {
     <>
       <style>{`
         @media(max-width:768px){
+          html,body{overflow-x:hidden !important;max-width:100vw !important}
           .bo-sidebar{display:none !important}
           .bo-overlay{display:block !important}
           .bo-topbar{display:flex !important}
           .bo-close{display:block !important}
           .bo-drawer{display:flex !important}
-          .bo-main{margin-left:0 !important;padding-top:56px !important;padding-bottom:max(24px,env(safe-area-inset-bottom,0px)) !important;overflow:unset !important}
+          .bo-main{margin-left:0 !important;padding-top:56px !important;padding-bottom:max(24px,env(safe-area-inset-bottom,0px)) !important;overflow:unset !important;max-width:100vw !important}
           .bo-sticky-hdr{top:56px !important}
           .bo-tab-bar{top:116px !important}
           .bo-page-pad{padding:16px !important}
