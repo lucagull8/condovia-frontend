@@ -189,10 +189,10 @@ export default function Amministratori() {
                       {(a.nome?.[0] || '') + (a.cognome?.[0] || '')}
                     </div>
                     <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ fontSize: 14, fontWeight: 600 }}>{a.nome} {a.cognome}</div>
-                      <div style={{ fontSize: 12, color: 'var(--ink-soft)' }}>{a.email}</div>
+                      <div style={{ fontSize: 14, fontWeight: 600, overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{a.nome} {a.cognome}</div>
+                      <div style={{ fontSize: 12, color: 'var(--ink-soft)', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{a.email}</div>
                     </div>
-                    <div style={{ display: 'flex', gap: 8, fontSize: 12, color: 'var(--ink-soft)', flexWrap: 'wrap' }}>
+                    <div style={{ display: 'flex', gap: 8, fontSize: 12, color: 'var(--ink-soft)', flexShrink: 0, flexWrap: 'nowrap' }}>
                       <span><strong style={{ color: 'var(--copper-dark)' }}>{a.condomini}</strong> cond.</span>
                       <span><strong style={{ color: 'var(--success)' }}>{a.serviziAttivi}</strong> servizi</span>
                       <span><strong style={{ color: 'var(--copper-dark)' }}>€ {fmt(a.stornoTotale || 0)}</strong></span>

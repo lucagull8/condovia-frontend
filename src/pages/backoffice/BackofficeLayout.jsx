@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { LayoutDashboard, Users, FileText, TrendingUp, Inbox, Receipt, UserPlus, LogOut, Menu, X, UserCircle } from 'lucide-react';
 import { LogoMark } from '../../components/Shared';
@@ -27,6 +27,9 @@ export default function BackofficeLayout({ children }) {
   useEffect(() => {
     boGetDashboard().then(d => setBadges({ richieste: d.richiesteInAttesa || 0, iscrizioni: d.iscrizioniPending || 0, wallet: d.richiesteWalletPending || 0 })).catch(() => {});
   }, [path]);
+
+  const mainRef = useRef(null);
+  useEffect(() => { mainRef.current?.scrollTo(0, 0); }, [path]);
 
   const getBadge = (to) => {
     if (to === '/backoffice/richieste') return badges.richieste;
@@ -107,7 +110,7 @@ export default function BackofficeLayout({ children }) {
         {open && <div className="bo-overlay" style={{ display: 'none', position: 'fixed', inset: 0, zIndex: 200, background: 'rgba(0,0,0,.5)' }} onClick={() => setOpen(false)} />}
         {/* Mobile drawer */}
         {open && <aside className="bo-drawer" style={{ display: 'none', position: 'fixed', top: 0, left: 0, bottom: 0, width: 260, zIndex: 201, background: 'linear-gradient(180deg,#2e2620,#1b1714)', flexDirection: 'column' }}>{sidebar}</aside>}
-        <main className="bo-main" style={{ flex: 1, background: '#f7f7f5', minHeight: '100vh', overflow: 'auto', paddingTop: 0 }}>{children}</main>
+        <main ref={mainRef} className="bo-main" style={{ flex: 1, background: '#f7f7f5', minHeight: '100vh', overflow: 'auto' }}>{children}</main>
       </div>
     </>
   );
