@@ -100,5 +100,6 @@ export const boApprovaIscrizione = (id) => request('PATCH', `/api/backoffice/isc
 export const boRifiutaIscrizione = (id) => request('PATCH', `/api/backoffice/iscrizioni/${id}/rifiuta`, {});
 export const boResetPassword = (id) => request('POST', `/api/backoffice/admin/${id}/reset-password`, {});
 export const forgotPassword = (email) => request('POST', '/api/auth/forgot-password', { email });
+export const changePassword = (currentPassword, newPassword) => request('POST', '/api/auth/change-password', { currentPassword, newPassword });
 export const boGetFatturazione = (stato) => request('GET', `/api/backoffice/fatturazione${stato ? `?stato=${stato}` : ''}`);
 export const boPatchFattura = (id, p) => request('PATCH', `/api/backoffice/fatturazione/${id}`, p);
