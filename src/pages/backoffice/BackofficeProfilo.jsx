@@ -32,7 +32,7 @@ export default function BackofficeProfilo() {
 
   return (
     <>
-      <div style={{ position: 'sticky', top: 0, zIndex: 10, background: '#fcfcfa', borderBottom: '1px solid var(--border)', padding: '0 20px', height: 60, display: 'flex', alignItems: 'center' }}>
+      <div className="bo-sticky-hdr" style={{ position: 'sticky', top: 0, zIndex: 10, background: '#fcfcfa', borderBottom: '1px solid var(--border)', padding: '0 20px', height: 60, display: 'flex', alignItems: 'center' }}>
         <h1 style={{ fontFamily: 'Fraunces', fontWeight: 500, fontSize: 22, margin: 0 }}>Profilo</h1>
       </div>
       <div style={{ maxWidth: 560, padding: '24px 20px', display: 'flex', flexDirection: 'column', gap: 20 }}>

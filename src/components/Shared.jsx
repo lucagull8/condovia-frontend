@@ -20,32 +20,63 @@ export function Header({ isPublic = false }) {
   const initials = utente ? `${utente.nome?.[0] ?? ''}${utente.cognome?.[0] ?? ''}`.toUpperCase() : '';
   const displayName = utente ? `${utente.nome} ${utente.cognome?.[0]}.` : '';
   const doLogout = () => { logout(); nav('/'); };
+  const NAV = [{ label: 'Home', to: '/home' }, { label: 'Wallet', to: '/wallet' }, { label: 'Scadenze', to: '/scadenze' }];
   return (
-    <header style={{ position: 'sticky', top: 0, zIndex: 50, background: 'rgba(250,250,247,.92)', backdropFilter: 'blur(12px)', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', gap: 16, padding: '0 24px', height: 60 }}>
-      <Link to={isPublic ? '/' : '/home'} style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
-        <LogoMark size={28} />
-        <span style={{ fontFamily: 'Fraunces', fontSize: 17, fontWeight: 500 }}>CONDOVIA</span>
-      </Link>
-      {!isPublic && <nav style={{ display: 'flex', alignItems: 'center', gap: 4, marginLeft: 8 }}>
-        {[{ label: 'Home', to: '/home' }, { label: 'Wallet', to: '/wallet' }, { label: 'Scadenze', to: '/scadenze' }].map(({ label, to }) => {
-          const a = loc.pathname === to;
-          return <Link key={to} to={to} style={{ padding: '5px 12px', borderRadius: 8, fontSize: 13.5, fontWeight: a ? 600 : 500, color: a ? 'var(--copper-dark)' : 'var(--ink-soft)', background: a ? 'var(--copper-50)' : 'transparent' }}>{label}</Link>;
-        })}
-      </nav>}
-      <div style={{ flex: 1, maxWidth: 360, margin: '0 auto', position: 'relative' }}>
-        <Search size={14} style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', color: 'var(--ink-soft)' }} />
-        <input type="search" placeholder="Cerca servizi…" style={{ width: '100%', height: 34, paddingLeft: 32, paddingRight: 12, border: '1px solid var(--border)', borderRadius: 8, background: 'var(--surface)', fontSize: 13, color: 'var(--ink)', outline: 'none' }} />
-      </div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginLeft: 'auto' }}>
-        {isPublic ? <Link to="/login" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, height: 38, padding: '0 16px', borderRadius: 10, background: 'linear-gradient(180deg,#c8843f,#a06525)', boxShadow: '0 0 0 1px rgba(110,62,21,.55)', color: '#fff', fontSize: 13.5, fontWeight: 600 }}>Login →</Link> : <>
-          <Link to="/profilo" style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '4px 10px 4px 4px', border: '1px solid var(--border)', borderRadius: 10, background: 'var(--surface)' }}>
-            <div style={{ width: 28, height: 28, borderRadius: 8, background: 'linear-gradient(135deg,#d4915a,#8b5520)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: 11, fontWeight: 700 }}>{initials}</div>
-            <span style={{ fontSize: 13, fontWeight: 500 }}>{displayName}</span>
-          </Link>
-          <button onClick={doLogout} title="Esci" style={{ width: 34, height: 34, borderRadius: 8, border: 0, background: 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--ink-soft)' }}><LogOut size={15} /></button>
-        </>}
-      </div>
-    </header>
+    <>
+      <style>{`
+        .hdr-nav{display:flex}
+        .hdr-search{display:flex}
+        .hdr-name{display:flex}
+        .hdr-logout{display:flex}
+        .mob-tab-bar{display:none}
+        .hdr-page-pad{}
+        @media(max-width:640px){
+          .hdr-nav{display:none !important}
+          .hdr-search{display:none !important}
+          .hdr-name{display:none !important}
+          .mob-tab-bar{display:flex !important}
+          .hdr-page-pad{padding-bottom:64px}
+        }
+      `}</style>
+      <header style={{ position: 'sticky', top: 0, zIndex: 50, background: 'rgba(250,250,247,.92)', backdropFilter: 'blur(12px)', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', gap: 16, padding: '0 20px', height: 60 }}>
+        <Link to={isPublic ? '/' : '/home'} style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
+          <LogoMark size={28} />
+          <span style={{ fontFamily: 'Fraunces', fontSize: 17, fontWeight: 500 }}>CONDOVIA</span>
+        </Link>
+        {!isPublic && <nav className="hdr-nav" style={{ alignItems: 'center', gap: 4, marginLeft: 8 }}>
+          {NAV.map(({ label, to }) => {
+            const a = loc.pathname === to;
+            return <Link key={to} to={to} style={{ padding: '5px 12px', borderRadius: 8, fontSize: 13.5, fontWeight: a ? 600 : 500, color: a ? 'var(--copper-dark)' : 'var(--ink-soft)', background: a ? 'var(--copper-50)' : 'transparent' }}>{label}</Link>;
+          })}
+        </nav>}
+        <div className="hdr-search" style={{ flex: 1, maxWidth: 360, margin: '0 auto', position: 'relative', alignItems: 'center' }}>
+          <Search size={14} style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', color: 'var(--ink-soft)' }} />
+          <input type="search" placeholder="Cerca servizi…" style={{ width: '100%', height: 34, paddingLeft: 32, paddingRight: 12, border: '1px solid var(--border)', borderRadius: 8, background: 'var(--surface)', fontSize: 13, color: 'var(--ink)', outline: 'none' }} />
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginLeft: 'auto' }}>
+          {isPublic ? <Link to="/login" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, height: 38, padding: '0 16px', borderRadius: 10, background: 'linear-gradient(180deg,#c8843f,#a06525)', boxShadow: '0 0 0 1px rgba(110,62,21,.55)', color: '#fff', fontSize: 13.5, fontWeight: 600 }}>Login →</Link> : <>
+            <Link to="/profilo" className="hdr-name" style={{ alignItems: 'center', gap: 7, padding: '4px 10px 4px 4px', border: '1px solid var(--border)', borderRadius: 10, background: 'var(--surface)' }}>
+              <div style={{ width: 28, height: 28, borderRadius: 8, background: 'linear-gradient(135deg,#d4915a,#8b5520)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: 11, fontWeight: 700 }}>{initials}</div>
+              <span style={{ fontSize: 13, fontWeight: 500 }}>{displayName}</span>
+            </Link>
+            <button onClick={doLogout} title="Esci" style={{ width: 34, height: 34, borderRadius: 8, border: 0, background: 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--ink-soft)' }}><LogOut size={15} /></button>
+          </>}
+        </div>
+      </header>
+      {!isPublic && (
+        <nav className="mob-tab-bar" style={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 100, height: 64, background: 'rgba(250,250,247,.97)', backdropFilter: 'blur(12px)', borderTop: '1px solid var(--border)', alignItems: 'stretch', paddingBottom: 'env(safe-area-inset-bottom)' }}>
+          {[...NAV, { label: 'Profilo', to: '/profilo' }].map(({ label, to }) => {
+            const a = loc.pathname === to;
+            return (
+              <Link key={to} to={to} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 3, fontSize: 10, fontWeight: a ? 700 : 500, color: a ? 'var(--copper-dark)' : 'var(--ink-soft)', textDecoration: 'none', paddingTop: 4 }}>
+                <span style={{ width: 36, height: 3, borderRadius: 2, background: a ? 'var(--copper)' : 'transparent', marginBottom: 1 }} />
+                {label}
+              </Link>
+            );
+          })}
+        </nav>
+      )}
+    </>
   );
 }
 
@@ -57,6 +88,7 @@ export function Footer() {
         <span style={{ fontFamily: 'Fraunces', fontSize: 14, fontWeight: 500 }}>CONDOVIA</span>
       </div>
       <span style={{ fontSize: 12, color: 'var(--ink-soft)' }}>© 2026 Condovia. Tutti i diritti riservati.</span>
+      <style>{`@media(max-width:640px){footer{padding-bottom:calc(20px + 64px + env(safe-area-inset-bottom,0px))}}`}</style>
     </footer>
   );
 }

@@ -20,14 +20,14 @@ return<div style={{minHeight:'100vh',display:'flex',flexDirection:'column'}}><He
 <div style={{fontSize:11,color:'rgba(245,236,224,.55)',marginBottom:4}}>Saldo disponibile</div>
 <div style={{fontSize:30,fontWeight:700,letterSpacing:'-0.03em'}}><span style={{fontSize:18,marginRight:2,color:'rgba(245,236,224,.7)'}}>€</span>{fmt(saldo)}</div></div>
 <ChevronRight size={18} color="rgba(245,236,224,.4)"/></Link></div>
-<div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:12,marginBottom:24}}>
-{[{label:'Servizi attivi',value:attivi,f:'attivo',color:'var(--success)',bg:'var(--success-bg)',border:'#c8dbc8'},
-{label:'In scadenza',value:scadenze,f:'scadenza',color:'var(--danger)',bg:'var(--danger-bg)',border:'#e8b8a8'},
+<div style={{display:'grid',gridTemplateColumns:'repeat(3,minmax(0,1fr))',gap:8,marginBottom:24}}>
+{[{label:'Attivi',value:attivi,f:'attivo',color:'var(--success)',bg:'var(--success-bg)',border:'#c8dbc8'},
+{label:'Scadenza',value:scadenze,f:'scadenza',color:'var(--danger)',bg:'var(--danger-bg)',border:'#e8b8a8'},
 {label:'Da attivare',value:daAtt,f:'no',color:'var(--copper-dark)',bg:'var(--copper-50)',border:'var(--copper-100)'}].map(({label,value,f,color,bg,border})=>{
-const a=filtro===f;return<button key={f} onClick={()=>setFiltro(a?null:f)} style={{padding:'16px 20px',borderRadius:14,background:a?bg:'var(--surface)',border:`1px solid ${a?border:'var(--border)'}`,cursor:'pointer',textAlign:'left'}}>
-<div style={{fontSize:28,fontWeight:700,color:a?color:'var(--ink)',marginBottom:2}}>{loadS?'—':value}</div>
-<div style={{fontSize:13,color:a?color:'var(--ink-soft)',fontWeight:a?600:400}}>{label}</div></button>;})}</div>
-<div style={{border:'1px solid var(--border)',borderRadius:24,padding:'28px 32px',background:'var(--surface)',marginBottom:32}}>
+const a=filtro===f;return<button key={f} onClick={()=>setFiltro(a?null:f)} style={{padding:'12px 10px',borderRadius:14,background:a?bg:'var(--surface)',border:`1px solid ${a?border:'var(--border)'}`,cursor:'pointer',textAlign:'left',minWidth:0}}>
+<div style={{fontSize:'clamp(20px,5vw,28px)',fontWeight:700,color:a?color:'var(--ink)',marginBottom:2}}>{loadS?'—':value}</div>
+<div style={{fontSize:'clamp(11px,2.5vw,13px)',color:a?color:'var(--ink-soft)',fontWeight:a?600:400,lineHeight:1.2}}>{label}</div></button>;})}</div>
+<div style={{border:'1px solid var(--border)',borderRadius:24,padding:'clamp(16px,3vw,28px) clamp(16px,3vw,32px)',background:'var(--surface)',marginBottom:32}}>
 <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:20}}>
 <h2 style={{fontFamily:'Fraunces',fontWeight:500,fontSize:20,margin:0}}>Servizi condominiali</h2>
 {filtro&&<button onClick={()=>setFiltro(null)} style={{fontSize:12,color:'var(--copper-dark)',background:'var(--copper-50)',border:0,borderRadius:6,padding:'4px 10px',cursor:'pointer'}}>× Mostra tutti</button>}</div>

@@ -81,7 +81,12 @@ export default function BackofficeLayout({ children }) {
           .bo-topbar{display:flex !important}
           .bo-close{display:block !important}
           .bo-drawer{display:flex !important}
-          .bo-main{margin-left:0 !important}
+          .bo-main{margin-left:0 !important;padding-top:56px !important}
+          .bo-sticky-hdr{top:56px !important}
+          .bo-page-pad{padding:16px !important}
+          .bo-two-col{flex-direction:column !important}
+          .bo-two-col-list{width:100% !important;max-height:280px !important;border-right:none !important;border-bottom:1px solid var(--border) !important}
+          .bo-two-col-detail{flex:1 !important}
         }
       `}</style>
       {/* Desktop sidebar */}

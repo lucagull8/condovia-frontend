@@ -161,7 +161,7 @@ export default function Amministratori() {
   if (!selected) {
     return (
       <>
-        <div style={{ position: 'sticky', top: 0, zIndex: 10, background: '#fcfcfa', borderBottom: '1px solid var(--border)', padding: '0 20px', height: 60, display: 'flex', alignItems: 'center', gap: 12 }}>
+        <div className="bo-sticky-hdr" style={{ position: 'sticky', top: 0, zIndex: 10, background: '#fcfcfa', borderBottom: '1px solid var(--border)', padding: '0 20px', height: 60, display: 'flex', alignItems: 'center', gap: 12 }}>
           <h1 style={{ fontFamily: 'Fraunces', fontWeight: 500, fontSize: 'clamp(18px,3vw,24px)', margin: 0, flex: 1 }}>Amministratori</h1>
           <span style={{ fontSize: 12, color: 'var(--ink-soft)' }}>{list.length} attivi</span>
           <button onClick={() => { setRefreshing(true); loadList(); }} disabled={refreshing} title="Aggiorna" style={{ display: 'flex', alignItems: 'center', gap: 6, height: 34, padding: '0 12px', borderRadius: 8, border: '1.5px solid var(--border)', background: 'transparent', fontSize: 13, cursor: 'pointer', color: 'var(--ink-soft)' }}>
@@ -192,7 +192,7 @@ export default function Amministratori() {
                       <div style={{ fontSize: 14, fontWeight: 600 }}>{a.nome} {a.cognome}</div>
                       <div style={{ fontSize: 12, color: 'var(--ink-soft)' }}>{a.email}</div>
                     </div>
-                    <div style={{ display: 'flex', gap: 16, fontSize: 12, color: 'var(--ink-soft)' }}>
+                    <div style={{ display: 'flex', gap: 8, fontSize: 12, color: 'var(--ink-soft)', flexWrap: 'wrap' }}>
                       <span><strong style={{ color: 'var(--copper-dark)' }}>{a.condomini}</strong> cond.</span>
                       <span><strong style={{ color: 'var(--success)' }}>{a.serviziAttivi}</strong> servizi</span>
                       <span><strong style={{ color: 'var(--copper-dark)' }}>€ {fmt(a.stornoTotale || 0)}</strong></span>
@@ -222,7 +222,7 @@ export default function Amministratori() {
 
   return (
     <>
-      <div style={{ position: 'sticky', top: 0, zIndex: 10, background: '#fcfcfa', borderBottom: '1px solid var(--border)', padding: '0 20px', height: 60, display: 'flex', alignItems: 'center', gap: 12 }}>
+      <div className="bo-sticky-hdr" style={{ position: 'sticky', top: 0, zIndex: 10, background: '#fcfcfa', borderBottom: '1px solid var(--border)', padding: '0 20px', height: 60, display: 'flex', alignItems: 'center', gap: 12 }}>
         <button onClick={() => setSelected(null)} style={{ display: 'flex', alignItems: 'center', gap: 4, height: 34, padding: '0 12px', borderRadius: 8, border: '1.5px solid var(--border)', background: 'transparent', fontSize: 13, cursor: 'pointer', color: 'var(--ink-soft)' }}>
           <ChevronLeft size={14} /> Lista
         </button>
@@ -232,9 +232,9 @@ export default function Amministratori() {
       </div>
 
       {/* Tab bar */}
-      <div style={{ display: 'flex', gap: 4, padding: '12px 20px 0', borderBottom: '1px solid var(--border)', background: '#fcfcfa' }}>
+      <div style={{ display: 'flex', gap: 4, padding: '12px 20px 0', borderBottom: '1px solid var(--border)', background: '#fcfcfa', overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
         {TABS.map(({ k, l, icon: I }) => (
-          <button key={k} onClick={() => setTab(k)} style={{ display: 'flex', alignItems: 'center', gap: 6, height: 38, padding: '0 14px', borderRadius: '8px 8px 0 0', border: 0, cursor: 'pointer', fontSize: 13, fontWeight: tab === k ? 700 : 400, color: tab === k ? 'var(--copper-dark)' : 'var(--ink-soft)', background: tab === k ? 'var(--surface)' : 'transparent', borderBottom: tab === k ? '2px solid var(--copper)' : '2px solid transparent' }}>
+          <button key={k} onClick={() => setTab(k)} style={{ display: 'flex', alignItems: 'center', gap: 6, height: 38, padding: '0 12px', borderRadius: '8px 8px 0 0', border: 0, cursor: 'pointer', fontSize: 13, fontWeight: tab === k ? 700 : 400, color: tab === k ? 'var(--copper-dark)' : 'var(--ink-soft)', background: tab === k ? 'var(--surface)' : 'transparent', borderBottom: tab === k ? '2px solid var(--copper)' : '2px solid transparent', flexShrink: 0, whiteSpace: 'nowrap' }}>
             <I size={13} /> {l}
           </button>
         ))}
@@ -283,10 +283,11 @@ export default function Amministratori() {
                   <div style={{ textAlign: 'center', padding: '40px 0', color: 'var(--ink-soft)', border: '1px dashed var(--border)', borderRadius: 14 }}>Nessun condominio</div>
                 ) : (
                   <div style={{ border: '1px solid var(--border)', borderRadius: 16, background: 'var(--surface)', overflow: 'hidden' }}>
-                    <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                    <div style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
+                    <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 480 }}>
                       <thead><tr style={{ background: 'var(--bg)' }}>
                         {['Nome', 'Indirizzo', 'Città', 'Unità', 'CF'].map(h => (
-                          <th key={h} style={{ padding: '10px 14px', textAlign: 'left', fontSize: 11, fontWeight: 600, letterSpacing: '0.04em', textTransform: 'uppercase', color: 'var(--ink-soft)', borderBottom: '1px solid var(--border)' }}>{h}</th>
+                          <th key={h} style={{ padding: '10px 14px', textAlign: 'left', fontSize: 11, fontWeight: 600, letterSpacing: '0.04em', textTransform: 'uppercase', color: 'var(--ink-soft)', borderBottom: '1px solid var(--border)', whiteSpace: 'nowrap' }}>{h}</th>
                         ))}
                       </tr></thead>
                       <tbody>
@@ -301,6 +302,7 @@ export default function Amministratori() {
                         ))}
                       </tbody>
                     </table>
+                    </div>
                   </div>
                 )}
               </div>
@@ -382,10 +384,11 @@ export default function Amministratori() {
                   {walletData.richiesteWallet.length === 0 ? (
                     <div style={{ padding: '24px 18px', textAlign: 'center', color: 'var(--ink-soft)', fontSize: 13 }}>Nessuna richiesta</div>
                   ) : (
-                    <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                    <div style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
+                    <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 460 }}>
                       <thead><tr style={{ background: 'var(--bg)' }}>
                         {['Data', 'Importo', 'Stato', 'Ricevuta', 'Azione'].map(h => (
-                          <th key={h} style={{ padding: '10px 14px', textAlign: 'left', fontSize: 11, fontWeight: 600, letterSpacing: '0.04em', textTransform: 'uppercase', color: 'var(--ink-soft)', borderBottom: '1px solid var(--border)' }}>{h}</th>
+                          <th key={h} style={{ padding: '10px 14px', textAlign: 'left', fontSize: 11, fontWeight: 600, letterSpacing: '0.04em', textTransform: 'uppercase', color: 'var(--ink-soft)', borderBottom: '1px solid var(--border)', whiteSpace: 'nowrap' }}>{h}</th>
                         ))}
                       </tr></thead>
                       <tbody>
@@ -417,6 +420,7 @@ export default function Amministratori() {
                         ))}
                       </tbody>
                     </table>
+                    </div>
                   )}
                 </div>
 

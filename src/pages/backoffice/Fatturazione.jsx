@@ -5,7 +5,7 @@ export default function Fatturazione(){const[fatture,setFatture]=useState([]);co
 const load=()=>{setLd(true);boGetFatturazione(tab==='tutte'?'':tab).then(d=>{setFatture(d.fatture);setStats(d.stats);}).finally(()=>setLd(false));};
 useEffect(load,[tab]);
 const ch=async(id,stato)=>{try{await boPatchFattura(id,{stato});load();}catch(e){alert(e.message);}};
-return<><div style={{position:'sticky',top:0,zIndex:10,background:'#f7f7f5',borderBottom:'1px solid var(--border)',padding:'0 20px',height:60,display:'flex',alignItems:'center'}}>
+return<><div className="bo-sticky-hdr" style={{position:'sticky',top:0,zIndex:10,background:'#f7f7f5',borderBottom:'1px solid var(--border)',padding:'0 20px',height:60,display:'flex',alignItems:'center'}}>
 <h1 style={{fontFamily:'Fraunces',fontWeight:500,fontSize:'clamp(18px,3vw,22px)',margin:0}}>Fatturazione</h1>
 {stats.inAttesa>0&&<span style={{background:'var(--danger)',color:'#fff',fontSize:11,fontWeight:700,borderRadius:6,padding:'2px 7px',marginLeft:10}}>{stats.inAttesa}</span>}</div>
 <div style={{padding:'20px',display:'flex',flexDirection:'column',gap:16}}>

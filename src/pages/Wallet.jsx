@@ -83,7 +83,7 @@ export default function WalletPage() {
         </h1>
 
         {/* Saldo card */}
-        <div style={{ borderRadius: 28, padding: 32, background: 'linear-gradient(155deg,#2e251f,#1a1411,#0c0806)', color: '#f5ece0', position: 'relative', overflow: 'hidden', boxShadow: '0 30px 60px -30px rgba(20,12,6,.55)', marginBottom: 16 }}>
+        <div style={{ borderRadius: 28, padding: 'clamp(20px,4vw,32px)', background: 'linear-gradient(155deg,#2e251f,#1a1411,#0c0806)', color: '#f5ece0', position: 'relative', overflow: 'hidden', boxShadow: '0 30px 60px -30px rgba(20,12,6,.55)', marginBottom: 16 }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 28 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
               <div style={{ width: 42, height: 42, borderRadius: 12, background: 'linear-gradient(155deg,#c8843f,#8b5520)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -110,9 +110,9 @@ export default function WalletPage() {
               { l: 'USCITE', v: `−€ ${fmt(usc)}`, c: 'rgba(245,236,224,.85)' },
               { l: 'MOVIMENTI', v: movimenti.length, c: 'rgba(245,236,224,.7)' },
             ].map(({ l, v, c }, i) => (
-              <div key={l} style={{ textAlign: 'center', padding: '0 12px', borderLeft: i > 0 ? '1px solid rgba(255,255,255,.08)' : 'none' }}>
-                <div style={{ fontSize: 9.5, fontWeight: 700, letterSpacing: '0.08em', color: 'rgba(245,236,224,.45)', marginBottom: 4 }}>{l}</div>
-                <div style={{ fontSize: 14, fontWeight: 600, color: c }}>{v}</div>
+              <div key={l} style={{ textAlign: 'center', padding: '0 6px', borderLeft: i > 0 ? '1px solid rgba(255,255,255,.08)' : 'none', minWidth: 0 }}>
+                <div style={{ fontSize: 9.5, fontWeight: 700, letterSpacing: '0.06em', color: 'rgba(245,236,224,.45)', marginBottom: 4 }}>{l}</div>
+                <div style={{ fontSize: 'clamp(11px,3vw,14px)', fontWeight: 600, color: c, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{v}</div>
               </div>
             ))}
           </div>

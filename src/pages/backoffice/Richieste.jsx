@@ -162,7 +162,7 @@ export default function Richieste() {
   if (!selectedAdmin) {
     return (
       <>
-        <div style={{ position: 'sticky', top: 0, zIndex: 10, background: '#fcfcfa', borderBottom: '1px solid var(--border)', padding: '0 20px', height: 60, display: 'flex', alignItems: 'center', gap: 10 }}>
+        <div className="bo-sticky-hdr" style={{ position: 'sticky', top: 0, zIndex: 10, background: '#fcfcfa', borderBottom: '1px solid var(--border)', padding: '0 20px', height: 60, display: 'flex', alignItems: 'center', gap: 10 }}>
           <h1 style={{ fontFamily: 'Fraunces', fontWeight: 500, fontSize: 'clamp(18px,3vw,24px)', margin: 0, flex: 1 }}>Richieste per amministratore</h1>
           <button onClick={doRefresh} disabled={refreshing} title="Aggiorna" style={{ display: 'flex', alignItems: 'center', gap: 6, height: 34, padding: '0 12px', borderRadius: 8, border: '1.5px solid var(--border)', background: 'transparent', fontSize: 13, cursor: 'pointer', color: 'var(--ink-soft)' }}>
             <RefreshCw size={14} style={{ animation: refreshing ? 'spin 1s linear infinite' : 'none' }} />
@@ -218,7 +218,7 @@ export default function Richieste() {
   // ─── Vista 2: richieste di un admin specifico ───────────
   return (
     <>
-      <div style={{ position: 'sticky', top: 0, zIndex: 10, background: '#fcfcfa', borderBottom: '1px solid var(--border)', padding: '0 20px', height: 60, display: 'flex', alignItems: 'center', gap: 12 }}>
+      <div className="bo-sticky-hdr" style={{ position: 'sticky', top: 0, zIndex: 10, background: '#fcfcfa', borderBottom: '1px solid var(--border)', padding: '0 20px', height: 60, display: 'flex', alignItems: 'center', gap: 12 }}>
         <button onClick={() => { setSelectedAdmin(null); setTab(''); }} style={{ display: 'flex', alignItems: 'center', gap: 4, height: 34, padding: '0 12px', borderRadius: 8, border: '1.5px solid var(--border)', background: 'transparent', fontSize: 13, cursor: 'pointer', color: 'var(--ink-soft)' }}>
           <ChevronLeft size={14} /> Indietro
         </button>
@@ -406,7 +406,7 @@ export default function Richieste() {
               {commNum > 0 && (
                 <div style={{ padding: '14px 16px', borderRadius: 12, background: 'linear-gradient(155deg,#2e251f,#1a1411)', color: '#f5ece0', marginTop: 4 }}>
                   <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'rgba(245,236,224,.5)', marginBottom: 10 }}>Anteprima calcolo</div>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8 }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(80px,1fr))', gap: 8 }}>
                     <div>
                       <div style={{ fontSize: 11, color: 'rgba(245,236,224,.5)', marginBottom: 2 }}>Commissione Condovia</div>
                       <div style={{ fontSize: 18, fontWeight: 700 }}>€ {fmt(commNum)}</div>

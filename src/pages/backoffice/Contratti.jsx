@@ -2,7 +2,7 @@ import{useState,useEffect}from'react';import{Link}from'react-router-dom';import{
 const fmt=n=>Number(n).toLocaleString('it-IT',{minimumFractionDigits:2});
 export default function Contratti(){const[data,setData]=useState([]);const[ld,setLd]=useState(true);
 useEffect(()=>{boGetContratti().then(setData).finally(()=>setLd(false));},[]);
-return<><div style={{position:'sticky',top:0,zIndex:10,background:'#fcfcfa',borderBottom:'1px solid var(--border)',padding:'0 20px',height:60,display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+return<><div className="bo-sticky-hdr" style={{position:'sticky',top:0,zIndex:10,background:'#fcfcfa',borderBottom:'1px solid var(--border)',padding:'0 20px',height:60,display:'flex',alignItems:'center',justifyContent:'space-between'}}>
 <h1 style={{fontFamily:'Fraunces',fontWeight:500,fontSize:'clamp(18px,3vw,24px)',margin:0}}>Contratti</h1></div>
 <div style={{padding:20}}>{ld?<div style={{textAlign:'center',padding:'48px 0',color:'var(--ink-soft)'}}>Caricamento…</div>:data.length===0?
 <div style={{textAlign:'center',padding:'60px 24px',border:'1px dashed var(--border)',borderRadius:20,background:'var(--surface)'}}>

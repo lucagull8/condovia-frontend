@@ -3,7 +3,7 @@ const fmt=n=>Number(n).toLocaleString('it-IT',{minimumFractionDigits:2});
 export default function Margini(){const[data,setData]=useState(null);const[ld,setLd]=useState(true);
 useEffect(()=>{boGetMargini().then(setData).finally(()=>setLd(false));},[]);
 const margini=data?.margini||[];const totali=data?.totali||{prezzo:0,storno:0,margine:0,contratti:0};const mx=Math.max(...margini.map(m=>m.totaleMargine),1);
-return<><div style={{position:'sticky',top:0,zIndex:10,background:'#fcfcfa',borderBottom:'1px solid var(--border)',padding:'0 20px',height:60,display:'flex',alignItems:'center'}}>
+return<><div className="bo-sticky-hdr" style={{position:'sticky',top:0,zIndex:10,background:'#fcfcfa',borderBottom:'1px solid var(--border)',padding:'0 20px',height:60,display:'flex',alignItems:'center'}}>
 <h1 style={{fontFamily:'Fraunces',fontWeight:500,fontSize:'clamp(18px,3vw,24px)',margin:0}}>Margini & Commissioni</h1></div>
 <div style={{padding:20,display:'flex',flexDirection:'column',gap:20}}>
 {ld?<div style={{textAlign:'center',padding:'48px 0',color:'var(--ink-soft)'}}>Caricamento…</div>:<>

@@ -22,10 +22,10 @@ export default function BackofficeDashboard() {
     { label: 'Pagamenti wallet', val: kpi.richiesteWalletPending || 0, icon: Wallet, bg: 'linear-gradient(135deg,#7c3aed,#5b21b6)' },
   ] : [];
   return <>
-    <div style={{ position: 'sticky', top: 0, zIndex: 10, background: '#fcfcfa', borderBottom: '1px solid var(--border)', padding: '0 28px', height: 60, display: 'flex', alignItems: 'center' }}>
+    <div className="bo-sticky-hdr" style={{ position: 'sticky', top: 0, zIndex: 10, background: '#fcfcfa', borderBottom: '1px solid var(--border)', padding: '0 20px', height: 60, display: 'flex', alignItems: 'center' }}>
       <h1 style={{ fontFamily: 'Fraunces', fontWeight: 500, fontSize: 24, margin: 0 }}>Dashboard commerciale</h1>
     </div>
-    <div style={{ padding: 28, display: 'flex', flexDirection: 'column', gap: 20 }}>
+    <div style={{ padding: 'clamp(16px,3vw,28px)', display: 'flex', flexDirection: 'column', gap: 20 }}>
       {loading ? <div style={{ textAlign: 'center', padding: '48px 0', color: 'var(--ink-soft)' }}>Caricamento…</div> : <>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(200px,1fr))', gap: 14 }}>
           {cards.map(({ label, val, icon: I, bg }) => <div key={label} style={{ border: '1px solid var(--border)', borderRadius: 16, padding: '18px 20px', background: 'var(--surface)' }}>

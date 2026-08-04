@@ -38,7 +38,7 @@ export default function Profilo() {
       <Header />
       <div style={{ maxWidth: 800, margin: '0 auto', width: '100%', padding: '32px 24px 60px' }}>
         <Link to="/home" style={{ fontSize: 13, color: 'var(--ink-soft)', marginBottom: 20, display: 'inline-block' }}>← Torna alla home</Link>
-        <h1 style={{ fontFamily: 'Fraunces', fontWeight: 500, fontSize: 48, margin: '0 0 32px' }}>Il tuo profilo<span style={{ color: 'var(--copper)' }}>.</span></h1>
+        <h1 style={{ fontFamily: 'Fraunces', fontWeight: 500, fontSize: 'clamp(26px,6vw,48px)', margin: '0 0 32px' }}>Il tuo profilo<span style={{ color: 'var(--copper)' }}>.</span></h1>
 
         {/* Avatar + info */}
         <div style={{ border: '1px solid var(--border)', borderRadius: 20, padding: '32px 24px', background: 'var(--surface)', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: 12, marginBottom: 20 }}>
