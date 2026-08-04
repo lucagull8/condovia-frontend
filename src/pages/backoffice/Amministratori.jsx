@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
-import { Search, ChevronLeft, Building2, FileText, Wallet, User, Plus, Upload, X, Check, ExternalLink, Trash2, RefreshCw } from 'lucide-react';
+import { Search, ChevronLeft, Building2, FileText, Wallet, User, Plus, Upload, X, Check, ExternalLink, Trash2, RefreshCw, KeyRound } from 'lucide-react';
 import { Badge } from '../../components/Shared';
 import {
   boGetAmministratori, boGetAmministratore,
   boGetCondominiAdmin, boCreaCondo,
   boGetDocumentiAdmin, boUploadDocumento, boGetDocumentoFileUrl,
   boGetAdminWallet, boAzzeraWallet, boPagaWallet, boGetRicevutaWalletUrl,
+  boResetPassword,
   BASE,
 } from '../../api';
 
@@ -112,6 +113,18 @@ export default function Amministratori() {
       setUploadFile(null);
     } catch (e) { alert(e.message); }
     finally { setUploadSaving(false); }
+  };
+
+  // Reset password
+  const [resettingPw, setResettingPw] = useState(false);
+  const handleResetPassword = async () => {
+    if (!confirm(`Reimpostare la password di ${selected.nome} ${selected.cognome}? Verrà inviata una password temporanea via email.`)) return;
+    setResettingPw(true);
+    try {
+      await boResetPassword(selected._id);
+      alert('Password reimpostata. L\'utente riceverà una email con la nuova password temporanea.');
+    } catch (e) { alert(e.message); }
+    finally { setResettingPw(false); }
   };
 
   // Azzera wallet
@@ -232,22 +245,29 @@ export default function Amministratori() {
           <>
             {/* ── Anagrafica ── */}
             {tab === 'anagrafica' && (
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(280px,1fr))', gap: 12 }}>
-                {[
-                  { l: 'Nome', v: `${selected.nome} ${selected.cognome}` },
-                  { l: 'Email', v: selected.email },
-                  { l: 'Studio', v: selected.studio || '—' },
-                  { l: 'Telefono', v: selected.telefono || '—' },
-                  { l: 'PEC', v: selected.pec || '—' },
-                  { l: 'Partita IVA', v: selected.partitaIva || '—' },
-                  { l: 'Saldo wallet', v: `€ ${fmt(selected.saldo || 0)}` },
-                  { l: 'Iscritto il', v: fD(selected.createdAt) },
-                ].map(({ l, v }) => (
-                  <div key={l} style={{ padding: '16px 18px', borderRadius: 12, background: 'var(--surface)', border: '1px solid var(--border)' }}>
-                    <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--ink-soft)', marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.04em' }}>{l}</div>
-                    <div style={{ fontSize: 14, fontWeight: 500 }}>{v}</div>
-                  </div>
-                ))}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(280px,1fr))', gap: 12 }}>
+                  {[
+                    { l: 'Nome', v: `${selected.nome} ${selected.cognome}` },
+                    { l: 'Email', v: selected.email },
+                    { l: 'Studio', v: selected.studio || '—' },
+                    { l: 'Telefono', v: selected.telefono || '—' },
+                    { l: 'PEC', v: selected.pec || '—' },
+                    { l: 'Partita IVA', v: selected.partitaIva || '—' },
+                    { l: 'Saldo wallet', v: `€ ${fmt(selected.saldo || 0)}` },
+                    { l: 'Iscritto il', v: fD(selected.createdAt) },
+                  ].map(({ l, v }) => (
+                    <div key={l} style={{ padding: '16px 18px', borderRadius: 12, background: 'var(--surface)', border: '1px solid var(--border)' }}>
+                      <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--ink-soft)', marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.04em' }}>{l}</div>
+                      <div style={{ fontSize: 14, fontWeight: 500 }}>{v}</div>
+                    </div>
+                  ))}
+                </div>
+                <div style={{ display: 'flex', gap: 10 }}>
+                  <button onClick={handleResetPassword} disabled={resettingPw} style={{ display: 'flex', alignItems: 'center', gap: 6, height: 38, padding: '0 16px', borderRadius: 10, border: '1.5px solid var(--border)', background: 'transparent', fontSize: 13, fontWeight: 500, cursor: 'pointer', color: 'var(--ink-soft)' }}>
+                    <KeyRound size={14} />{resettingPw ? 'Reset in corso…' : 'Reset password'}
+                  </button>
+                </div>
               </div>
             )}
 

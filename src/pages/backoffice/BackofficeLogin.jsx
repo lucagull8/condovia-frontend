@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { LogoMark } from '../../components/Shared';
+import { LogoMark, PasswordInput } from '../../components/Shared';
 export default function BackofficeLogin() {
   const nav = useNavigate();
   const { login } = useAuth();
@@ -27,7 +27,7 @@ export default function BackofficeLogin() {
         <p style={{ margin: '0 0 28px', fontSize: 14, color: 'rgba(245,236,224,.5)' }}>Area riservata al team commerciale</p>
         <form onSubmit={handle} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
           <div><label style={{ fontSize: 12, fontWeight: 600, color: 'rgba(245,236,224,.6)', display: 'block', marginBottom: 6 }}>EMAIL</label><input type="email" value={email} onChange={e => setEmail(e.target.value)} style={inp} /></div>
-          <div><label style={{ fontSize: 12, fontWeight: 600, color: 'rgba(245,236,224,.6)', display: 'block', marginBottom: 6 }}>PASSWORD</label><input type="password" value={pw} onChange={e => setPw(e.target.value)} placeholder="••••••••" style={inp} /></div>
+          <div><label style={{ fontSize: 12, fontWeight: 600, color: 'rgba(245,236,224,.6)', display: 'block', marginBottom: 6 }}>PASSWORD</label><PasswordInput value={pw} onChange={e => setPw(e.target.value)} inputStyle={{ ...inp }} /></div>
           {err && <div style={{ padding: '10px 14px', borderRadius: 10, background: 'rgba(220,80,60,.12)', border: '1px solid rgba(220,80,60,.3)', color: '#f99', fontSize: 13 }}>{err}</div>}
           <button type="submit" disabled={busy} style={{ height: 52, borderRadius: 13, border: 0, marginTop: 4, background: busy ? 'rgba(184,115,51,.4)' : 'linear-gradient(180deg,#c8843f,#a06525)', color: '#fff', fontSize: 15, fontWeight: 600 }}>{busy ? 'Accesso in corso…' : 'Accedi'}</button>
         </form>

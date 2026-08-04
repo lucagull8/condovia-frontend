@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { CircleCheckBig } from 'lucide-react';
-import { Header, Footer } from '../components/Shared';
+import { Header, Footer, PasswordInput } from '../components/Shared';
 import { register } from '../api';
 
 export default function Register() {
@@ -63,7 +63,7 @@ export default function Register() {
                 </div>
                 <div>
                   <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: 'var(--ink-soft)', marginBottom: 6 }}>Password * <span style={{ fontWeight: 400, color: 'var(--ink-soft)' }}>(min. 6 caratteri)</span></label>
-                  <input type="password" value={form.password} onChange={e => set('password', e.target.value)} placeholder="••••••••" style={inp} />
+                  <PasswordInput value={form.password} onChange={e => set('password', e.target.value)} inputStyle={inp} />
                 </div>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                   <div>
