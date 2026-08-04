@@ -29,7 +29,7 @@ export default function BackofficeLayout({ children }) {
   }, [path]);
 
   const mainRef = useRef(null);
-  useEffect(() => { mainRef.current?.scrollTo(0, 0); }, [path]);
+  useEffect(() => { mainRef.current?.scrollTo(0, 0); window.scrollTo(0, 0); }, [path]);
 
   const getBadge = (to) => {
     if (to === '/backoffice/richieste') return badges.richieste;
@@ -84,7 +84,7 @@ export default function BackofficeLayout({ children }) {
           .bo-topbar{display:flex !important}
           .bo-close{display:block !important}
           .bo-drawer{display:flex !important}
-          .bo-main{margin-left:0 !important;padding-top:56px !important;padding-bottom:max(24px,env(safe-area-inset-bottom,0px)) !important}
+          .bo-main{margin-left:0 !important;padding-top:56px !important;padding-bottom:max(24px,env(safe-area-inset-bottom,0px)) !important;overflow:unset !important}
           .bo-sticky-hdr{top:56px !important}
           .bo-tab-bar{top:116px !important}
           .bo-page-pad{padding:16px !important}
