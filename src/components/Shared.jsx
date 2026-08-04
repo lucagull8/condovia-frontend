@@ -6,9 +6,13 @@ import { useAuth } from '../context/AuthContext';
 export function LogoMark({ size = 28 }) {
   return (
     <svg width={size} height={size} viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M 66 25 A 30 30 0 1 0 66 55" stroke="currentColor" strokeWidth="6.5" strokeLinecap="round"/>
-      <rect x="29" y="18" width="12" height="46" fill="white" stroke="currentColor" strokeWidth="0.5"/>
-      <polygon points="43,28 57,22 57,64 43,64" fill="#b07030"/>
+      {/* Nearly complete ring — gap from 1 o'clock to 2:30, CCW large arc */}
+      <path d="M 54,16 A 28,28 0 1 0 67,33"
+            stroke="currentColor" strokeWidth="3" strokeLinecap="round"/>
+      {/* Tall white building */}
+      <rect x="34" y="20" width="12" height="53" fill="white" stroke="currentColor" strokeWidth="0.8"/>
+      {/* Copper trapezoid: left edge angled, right edge vertical */}
+      <polygon points="49,38 61,46 62,73 49,73" fill="#b07030"/>
     </svg>
   );
 }
