@@ -88,7 +88,6 @@ export function Footer() {
         <span style={{ fontFamily: 'Fraunces', fontSize: 14, fontWeight: 500 }}>CONDOVIA</span>
       </div>
       <span style={{ fontSize: 12, color: 'var(--ink-soft)' }}>© 2026 Condovia. Tutti i diritti riservati.</span>
-      <style>{`@media(max-width:640px){footer{padding-bottom:calc(20px + 64px + env(safe-area-inset-bottom,0px))}}`}</style>
     </footer>
   );
 }

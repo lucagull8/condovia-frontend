@@ -2,4 +2,10 @@
 *,*::before,*::after{box-sizing:border-box}
 html,body,#root{background:var(--bg);min-height:100%;color:var(--ink);-webkit-font-smoothing:antialiased;margin:0;padding:0;font-family:Inter,system-ui,sans-serif}
 a{color:inherit;text-decoration:none}button{font:inherit;cursor:pointer}input,select,textarea{font:inherit}
-@media(max-width:640px){.mob-page-content{padding-bottom:72px !important}}
+@media(max-width:640px){
+  /* Prevent iOS auto-zoom when focusing inputs (triggers when font-size < 16px) */
+  input[type=text],input[type=email],input[type=password],input[type=search],input[type=number],input[type=tel],textarea,select{font-size:16px !important}
+  /* Ensure page content clears the fixed bottom tab bar */
+  #root{padding-bottom:calc(64px + env(safe-area-inset-bottom,0px))}
+  .mob-page-content{padding-bottom:72px !important}
+}

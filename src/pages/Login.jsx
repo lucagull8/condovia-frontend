@@ -54,7 +54,7 @@ export default function Login() {
     try{const d=await login(email,pw);nav(d.ruolo==='commerciale'?'/backoffice':'/home');}catch(e){setErr(e.message);}finally{setBusy(false);}};
   const inp = { width:'100%', height:48, borderRadius:12, padding:'0 16px', border:'1.5px solid var(--border)', background:'var(--surface)', fontSize:14, color:'var(--ink)', outline:'none', boxSizing:'border-box' };
   return (
-    <div style={{minHeight:'100vh',display:'flex',alignItems:'center',justifyContent:'center',background:'var(--bg)',padding:24}}>
+    <div style={{minHeight:'100vh',display:'flex',alignItems:'center',justifyContent:'center',background:'var(--bg)',padding:24,overflowY:'auto'}}>
       {showForgot && <ForgotModal onClose={() => setShowForgot(false)} />}
       <div style={{width:'100%',maxWidth:460}}>
         <Link to="/" style={{display:'flex',alignItems:'center',gap:8,marginBottom:48}}>
