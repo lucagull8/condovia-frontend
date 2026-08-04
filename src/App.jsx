@@ -22,6 +22,7 @@ const Margini = lazy(() => import('./pages/backoffice/Margini'));
 const Richieste = lazy(() => import('./pages/backoffice/Richieste'));
 const Fatturazione = lazy(() => import('./pages/backoffice/Fatturazione'));
 const Iscrizioni = lazy(() => import('./pages/backoffice/Iscrizioni'));
+const BackofficeProfilo = lazy(() => import('./pages/backoffice/BackofficeProfilo'));
 import BackofficeLayout from './pages/backoffice/BackofficeLayout';
 
 export default function App() {
@@ -48,6 +49,7 @@ export default function App() {
             <Route path="/backoffice/richieste" element={<RequireCommerciale><BackofficeLayout><Richieste /></BackofficeLayout></RequireCommerciale>} />
             <Route path="/backoffice/fatturazione" element={<RequireCommerciale><BackofficeLayout><Fatturazione /></BackofficeLayout></RequireCommerciale>} />
             <Route path="/backoffice/iscrizioni" element={<RequireCommerciale><BackofficeLayout><Iscrizioni /></BackofficeLayout></RequireCommerciale>} />
+            <Route path="/backoffice/profilo" element={<RequireCommerciale><BackofficeLayout><BackofficeProfilo /></BackofficeLayout></RequireCommerciale>} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Suspense>

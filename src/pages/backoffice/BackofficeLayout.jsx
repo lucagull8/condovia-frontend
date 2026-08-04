@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Users, FileText, TrendingUp, Inbox, Receipt, UserPlus, LogOut, Menu, X } from 'lucide-react';
+import { LayoutDashboard, Users, FileText, TrendingUp, Inbox, Receipt, UserPlus, LogOut, Menu, X, UserCircle } from 'lucide-react';
 import { LogoMark } from '../../components/Shared';
 import { useAuth } from '../../context/AuthContext';
 import { boGetDashboard } from '../../api';
@@ -58,7 +58,7 @@ export default function BackofficeLayout({ children }) {
           );
         })}
       </nav>
-      <div style={{ margin: '8px 12px 16px', padding: '10px 12px', borderRadius: 10, background: 'rgba(255,255,255,.06)', display: 'flex', alignItems: 'center', gap: 10 }}>
+      <div style={{ margin: '8px 12px 4px', padding: '10px 12px', borderRadius: 10, background: 'rgba(255,255,255,.06)', display: 'flex', alignItems: 'center', gap: 10 }}>
         <div style={{ width: 30, height: 30, borderRadius: 8, background: 'linear-gradient(135deg,#d4915a,#8b5520)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: 11, fontWeight: 700 }}>{utente ? `${utente.nome?.[0] || ''}${utente.cognome?.[0] || ''}` : 'CO'}</div>
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ fontSize: 12.5, fontWeight: 600, color: '#f5ece0' }}>{displayName}</div>
@@ -66,6 +66,9 @@ export default function BackofficeLayout({ children }) {
         </div>
         <button onClick={doLogout} style={{ background: 'transparent', border: 0, padding: 0 }}><LogOut size={14} color="rgba(245,236,224,.4)" /></button>
       </div>
+      <Link to="/backoffice/profilo" onClick={() => setOpen(false)} style={{ margin: '4px 12px 16px', display: 'flex', alignItems: 'center', gap: 8, padding: '7px 10px', borderRadius: 8, fontSize: 12.5, color: 'rgba(245,236,224,.5)', textDecoration: 'none' }}>
+        <UserCircle size={13} /> Profilo e password
+      </Link>
     </>
   );
 
@@ -89,9 +92,9 @@ export default function BackofficeLayout({ children }) {
         {/* Mobile topbar */}
         <div className="bo-topbar" style={{ display: 'none', position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100, height: 56, background: 'linear-gradient(180deg,#2e2620,#1b1714)', alignItems: 'center', padding: '0 16px', gap: 12, borderBottom: '1px solid rgba(255,255,255,.06)' }}>
           <button onClick={() => setOpen(true)} style={{ background: 'transparent', border: 0, color: '#f5ece0' }}><Menu size={22} /></button>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            <div style={{ width: 24, height: 24, borderRadius: 6, background: 'linear-gradient(155deg,#d4915a,#b87333,#6e3e15)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontFamily: 'Fraunces', fontWeight: 600, fontSize: 13 }}>c</div>
-            <span style={{ fontFamily: 'Fraunces', fontSize: 15, fontWeight: 500, color: '#f5ece0' }}>condovia</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#f5ece0' }}>
+            <LogoMark size={24} />
+            <span style={{ fontFamily: 'Fraunces', fontSize: 15, fontWeight: 500, color: '#f5ece0' }}>CONDOVIA</span>
           </div>
         </div>
         {/* Mobile drawer overlay */}
