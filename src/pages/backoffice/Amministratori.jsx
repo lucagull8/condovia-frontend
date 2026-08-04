@@ -232,7 +232,7 @@ export default function Amministratori() {
       </div>
 
       {/* Tab bar */}
-      <div style={{ display: 'flex', gap: 4, padding: '12px 20px 0', borderBottom: '1px solid var(--border)', background: '#fcfcfa', overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
+      <div className="bo-tab-bar" style={{ position: 'sticky', top: 60, zIndex: 9, display: 'flex', gap: 4, padding: '12px 20px 0', borderBottom: '1px solid var(--border)', background: '#fcfcfa', overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
         {TABS.map(({ k, l, icon: I }) => (
           <button key={k} onClick={() => setTab(k)} style={{ display: 'flex', alignItems: 'center', gap: 6, height: 38, padding: '0 12px', borderRadius: '8px 8px 0 0', border: 0, cursor: 'pointer', fontSize: 13, fontWeight: tab === k ? 700 : 400, color: tab === k ? 'var(--copper-dark)' : 'var(--ink-soft)', background: tab === k ? 'var(--surface)' : 'transparent', borderBottom: tab === k ? '2px solid var(--copper)' : '2px solid transparent', flexShrink: 0, whiteSpace: 'nowrap' }}>
             <I size={13} /> {l}

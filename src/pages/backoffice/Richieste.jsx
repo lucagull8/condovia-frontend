@@ -194,9 +194,9 @@ export default function Richieste() {
                     <div style={{ width: 40, height: 40, borderRadius: 10, background: COLORI[i % 4], display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: 13, fontWeight: 700, flexShrink: 0 }}>
                       {(admin.nome?.[0] || '') + (admin.cognome?.[0] || '')}
                     </div>
-                    <div style={{ flex: 1 }}>
-                      <div style={{ fontWeight: 600, fontSize: 14 }}>{admin.nome} {admin.cognome}</div>
-                      <div style={{ fontSize: 12, color: 'var(--ink-soft)' }}>{admin.email}</div>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ fontWeight: 600, fontSize: 14, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{admin.nome} {admin.cognome}</div>
+                      <div style={{ fontSize: 12, color: 'var(--ink-soft)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{admin.email}</div>
                     </div>
                     <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                       {inAttesa > 0 && <span style={{ fontSize: 11.5, fontWeight: 700, color: '#c8843f', background: '#fef3e2', borderRadius: 6, padding: '3px 8px' }}>{inAttesa} in attesa</span>}
