@@ -39,7 +39,7 @@ export default function BackofficeLayout({ children }) {
     <>
       <div style={{ padding: '20px 20px 16px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <div style={{ color: '#f5ece0' }}><LogoMark size={28} /></div>
+          <LogoMark size={28} variant="light" />
           <span style={{ fontFamily: 'Fraunces', fontSize: 17, fontWeight: 500, color: '#f5ece0' }}>CONDOVIA</span>
           <button onClick={() => setOpen(false)} className="bo-close" style={{ display: 'none', marginLeft: 'auto', background: 'transparent', border: 0, color: 'rgba(245,236,224,.6)' }}><X size={18} /></button>
         </div>
@@ -99,7 +99,7 @@ export default function BackofficeLayout({ children }) {
         <div className="bo-topbar" style={{ display: 'none', position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100, height: 56, background: 'linear-gradient(180deg,#2e2620,#1b1714)', alignItems: 'center', padding: '0 16px', gap: 12, borderBottom: '1px solid rgba(255,255,255,.06)' }}>
           <button onClick={() => setOpen(true)} style={{ background: 'transparent', border: 0, color: '#f5ece0' }}><Menu size={22} /></button>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#f5ece0' }}>
-            <LogoMark size={24} />
+            <LogoMark size={24} variant="light" />
             <span style={{ fontFamily: 'Fraunces', fontSize: 15, fontWeight: 500, color: '#f5ece0' }}>CONDOVIA</span>
           </div>
         </div>

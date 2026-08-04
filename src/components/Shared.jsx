@@ -3,14 +3,14 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Bell, ChevronDown, LogOut, Search } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
-export function LogoMark({ size = 28 }) {
+export function LogoMark({ size = 28, variant = 'dark' }) {
   return (
     <img
-      src="/images/logomark-128.png"
+      src={variant === 'light' ? '/images/logo-light.png' : '/images/logo-dark.png'}
       width={size}
       height={size}
       alt=""
-      style={{ display: 'block', flexShrink: 0, borderRadius: Math.round(size * 0.225) }}
+      style={{ display: 'block', flexShrink: 0 }}
     />
   );
 }
