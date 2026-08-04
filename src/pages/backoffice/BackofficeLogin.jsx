@@ -68,7 +68,7 @@ export default function BackofficeLogin() {
       {showForgot && <ForgotModal onClose={() => setShowForgot(false)} />}
       <div style={{ position: 'relative', width: '100%', maxWidth: 400, background: 'rgba(255,255,255,.04)', backdropFilter: 'blur(12px)', border: '1px solid rgba(255,255,255,.1)', borderRadius: 24, padding: '40px 36px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 32 }}>
-          <div style={{ color: '#f5ece0' }}><LogoMark size={36} /></div>
+          <LogoMark size={36} variant="light" />
           <div><div style={{ fontFamily: 'Fraunces', fontSize: 20, fontWeight: 500, color: '#f5ece0' }}>CONDOVIA</div><div style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(212,145,90,.7)', marginTop: -2 }}>Backoffice</div></div>
         </div>
         <h1 style={{ fontFamily: 'Fraunces', fontWeight: 500, fontSize: 26, color: '#f5ece0', margin: '0 0 6px' }}>Accedi al backoffice</h1>
