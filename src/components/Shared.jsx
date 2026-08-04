@@ -4,14 +4,21 @@ import { Bell, ChevronDown, LogOut, Search } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 export function LogoMark({ size = 28, variant = 'dark' }) {
+  // variant='dark' = elementi scuri su sfondo chiaro (header)
+  // variant='light' = elementi chiari su sfondo scuro (backoffice)
+  const isLight = variant === 'light';
+  const stroke = isLight ? '#f4f1ec' : '#1f1d21';
+  const bFill  = isLight ? '#211f22' : '#fbf9f6';
+  const clipId = isLight ? 'lm-cl' : 'lm-cd';
   return (
-    <img
-      src={variant === 'light' ? '/images/logo-light.png' : '/images/logo-dark.png'}
-      width={size}
-      height={size}
-      alt=""
-      style={{ display: 'block', flexShrink: 0 }}
-    />
+    <svg width={size} height={size} viewBox="-4.5 12 244 244" xmlns="http://www.w3.org/2000/svg" style={{ display: 'block', flexShrink: 0 }}>
+      <defs><clipPath id={clipId}><circle cx="134" cy="131" r="99"/></clipPath></defs>
+      <path d="M 201 211 A 104 104 0 1 1 205 55" fill="none" stroke={stroke} strokeWidth="14" strokeLinecap="round"/>
+      <g clipPath={`url(#${clipId})`}>
+        <polygon points="140,80 94,100 94,240 140,242" fill={bFill} stroke={stroke} strokeWidth="2" strokeLinejoin="round"/>
+        <polygon points="156,127 192,152 192,231 156,242" fill="#b2702f"/>
+      </g>
+    </svg>
   );
 }
 
