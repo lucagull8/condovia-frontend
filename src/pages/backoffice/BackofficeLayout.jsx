@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { LayoutDashboard, Users, FileText, TrendingUp, Inbox, Receipt, UserPlus, LogOut, Menu, X } from 'lucide-react';
+import { LogoMark } from '../../components/Shared';
 import { useAuth } from '../../context/AuthContext';
 import { boGetDashboard } from '../../api';
 
@@ -38,8 +39,8 @@ export default function BackofficeLayout({ children }) {
     <>
       <div style={{ padding: '20px 20px 16px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <div style={{ width: 28, height: 28, borderRadius: 8, background: 'linear-gradient(155deg,#d4915a,#b87333,#6e3e15)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontFamily: 'Fraunces', fontWeight: 600, fontSize: 16 }}>c</div>
-          <span style={{ fontFamily: 'Fraunces', fontSize: 17, fontWeight: 500, color: '#f5ece0' }}>condovia</span>
+          <div style={{ color: '#f5ece0' }}><LogoMark size={28} /></div>
+          <span style={{ fontFamily: 'Fraunces', fontSize: 17, fontWeight: 500, color: '#f5ece0' }}>CONDOVIA</span>
           <button onClick={() => setOpen(false)} className="bo-close" style={{ display: 'none', marginLeft: 'auto', background: 'transparent', border: 0, color: 'rgba(245,236,224,.6)' }}><X size={18} /></button>
         </div>
         <div style={{ marginTop: 6, marginLeft: 36, fontSize: 10, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#d4915a' }}>Backoffice</div>

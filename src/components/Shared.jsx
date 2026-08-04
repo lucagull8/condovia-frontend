@@ -2,6 +2,16 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Bell, ChevronDown, LogOut, Search } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
+export function LogoMark({ size = 28 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M 66 25 A 30 30 0 1 0 66 55" stroke="currentColor" strokeWidth="6.5" strokeLinecap="round"/>
+      <rect x="29" y="18" width="12" height="46" fill="white" stroke="currentColor" strokeWidth="0.5"/>
+      <polygon points="43,28 57,22 57,64 43,64" fill="#b07030"/>
+    </svg>
+  );
+}
+
 export function Header({ isPublic = false }) {
   const loc = useLocation();
   const nav = useNavigate();
@@ -12,8 +22,8 @@ export function Header({ isPublic = false }) {
   return (
     <header style={{ position: 'sticky', top: 0, zIndex: 50, background: 'rgba(250,250,247,.92)', backdropFilter: 'blur(12px)', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', gap: 16, padding: '0 24px', height: 60 }}>
       <Link to={isPublic ? '/' : '/home'} style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
-        <div style={{ width: 28, height: 28, borderRadius: 8, background: 'linear-gradient(155deg,#d4915a 0%,#b87333 50%,#6e3e15 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontFamily: 'Fraunces', fontWeight: 600, fontSize: 16 }}>c</div>
-        <span style={{ fontFamily: 'Fraunces', fontSize: 17, fontWeight: 500 }}>condovia</span>
+        <LogoMark size={28} />
+        <span style={{ fontFamily: 'Fraunces', fontSize: 17, fontWeight: 500 }}>CONDOVIA</span>
       </Link>
       {!isPublic && <nav style={{ display: 'flex', alignItems: 'center', gap: 4, marginLeft: 8 }}>
         {[{ label: 'Home', to: '/home' }, { label: 'Wallet', to: '/wallet' }, { label: 'Scadenze', to: '/scadenze' }].map(({ label, to }) => {
@@ -42,8 +52,8 @@ export function Footer() {
   return (
     <footer style={{ borderTop: '1px solid var(--border)', padding: '20px 24px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 16, background: 'var(--surface)' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-        <div style={{ width: 20, height: 20, borderRadius: 6, background: 'linear-gradient(155deg,#d4915a 0%,#b87333 50%,#6e3e15 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontFamily: 'Fraunces', fontWeight: 600, fontSize: 12 }}>c</div>
-        <span style={{ fontFamily: 'Fraunces', fontSize: 14, fontWeight: 500 }}>condovia</span>
+        <LogoMark size={20} />
+        <span style={{ fontFamily: 'Fraunces', fontSize: 14, fontWeight: 500 }}>CONDOVIA</span>
       </div>
       <span style={{ fontSize: 12, color: 'var(--ink-soft)' }}>© 2026 Condovia. Tutti i diritti riservati.</span>
     </footer>
@@ -60,7 +70,7 @@ export function Badge({ variant = 'grigio', dot, children, style }) {
 export function LoadingScreen() {
   return <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg)' }}>
     <div style={{ textAlign: 'center' }}>
-      <div style={{ width: 36, height: 36, borderRadius: 10, background: 'linear-gradient(155deg,#d4915a,#b87333,#6e3e15)', margin: '0 auto 12px', animation: 'pulse 1.4s ease-in-out infinite' }} />
+      <div style={{ width: 36, height: 36, margin: '0 auto 12px', animation: 'pulse 1.4s ease-in-out infinite', color: '#b87333' }}><LogoMark size={36} /></div>
       <style>{`@keyframes pulse{0%,100%{opacity:.4;transform:scale(.95)}50%{opacity:1;transform:scale(1)}}`}</style>
       <div style={{ fontSize: 13, color: 'var(--ink-soft)' }}>Caricamento…</div>
     </div>
