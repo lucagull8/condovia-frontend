@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Wallet, Users, ChartColumn, CircleCheckBig, CircleAlert, Circle } from 'lucide-react';
+import { Wallet, Users, CircleCheckBig, CircleAlert, Circle } from 'lucide-react';
 import { Header, Footer } from '../components/Shared';
 import { ServiceIcon, SERVIZI_CATALOGO } from '../components/ServiceIcon';
 export default function Landing() {
