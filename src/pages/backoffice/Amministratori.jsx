@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { Search, ChevronLeft, Building2, FileText, Wallet, User, Plus, Upload, X, Check, ExternalLink, Trash2, RefreshCw, KeyRound, Pencil } from 'lucide-react';
 import { useVisibilityRefresh } from '../../hooks/useVisibilityRefresh';
 import { Badge } from '../../components/Shared';
+import { AddressAutocomplete } from '../../components/AddressAutocomplete';
 import {
   boGetAmministratori, boGetAmministratore,
   boGetCondominiAdmin, boCreaCondo, boUpdateCondo, boDeleteCondo,
@@ -491,17 +492,28 @@ export default function Amministratori() {
             <button onClick={() => { setShowCondoModal(false); setCondoEditingId(null); setCondoForm({ nome: '', via: '', citta: '', unita: '', codiceFiscale: '' }); }} style={{ position: 'absolute', top: 14, right: 14, width: 32, height: 32, borderRadius: 8, border: 0, background: 'transparent', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><X size={15} /></button>
             <h2 style={{ fontFamily: 'Fraunces', fontWeight: 500, fontSize: 20, margin: '0 0 20px' }}>{condoEditingId ? 'Modifica condominio' : 'Aggiungi condominio'}</h2>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-              {[
-                { k: 'nome', l: 'Nome *', ph: 'Residence Aventino' },
-                { k: 'via', l: 'Indirizzo', ph: 'Via di San Saba 24' },
-                { k: 'citta', l: 'Città', ph: 'Roma' },
-                { k: 'codiceFiscale', l: 'Codice fiscale', ph: '97012345678' },
-              ].map(({ k, l, ph }) => (
-                <div key={k}>
-                  <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: 'var(--ink-soft)', marginBottom: 4 }}>{l}</label>
-                  <input value={condoForm[k]} onChange={e => setCondoForm(f => ({ ...f, [k]: e.target.value }))} placeholder={ph} style={inp} />
-                </div>
-              ))}
+              <div>
+                <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: 'var(--ink-soft)', marginBottom: 4 }}>Nome *</label>
+                <input value={condoForm.nome} onChange={e => setCondoForm(f => ({ ...f, nome: e.target.value }))} placeholder="Residence Aventino" style={inp} />
+              </div>
+              <div>
+                <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: 'var(--ink-soft)', marginBottom: 4 }}>Indirizzo</label>
+                <AddressAutocomplete
+                  value={condoForm.via}
+                  onChange={v => setCondoForm(f => ({ ...f, via: v }))}
+                  onSelect={a => setCondoForm(f => ({ ...f, via: a.via || f.via, citta: a.citta || f.citta }))}
+                  placeholder="Inizia a digitare: Via di San Saba…"
+                  style={inp}
+                />
+              </div>
+              <div>
+                <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: 'var(--ink-soft)', marginBottom: 4 }}>Città</label>
+                <input value={condoForm.citta} onChange={e => setCondoForm(f => ({ ...f, citta: e.target.value }))} placeholder="Roma" style={inp} />
+              </div>
+              <div>
+                <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: 'var(--ink-soft)', marginBottom: 4 }}>Codice fiscale</label>
+                <input value={condoForm.codiceFiscale} onChange={e => setCondoForm(f => ({ ...f, codiceFiscale: e.target.value }))} placeholder="97012345678" style={inp} />
+              </div>
               <div>
                 <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: 'var(--ink-soft)', marginBottom: 4 }}>N° unità</label>
                 <input type="number" value={condoForm.unita} onChange={e => setCondoForm(f => ({ ...f, unita: e.target.value }))} placeholder="32" style={inp} />
