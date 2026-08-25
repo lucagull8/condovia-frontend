@@ -74,6 +74,8 @@ export const boGetDashboard = () => request('GET', '/api/backoffice/dashboard');
 export const boGetServizi = () => request('GET', '/api/backoffice/servizi');
 export const boGetCondominiAdmin = (adminId) => request('GET', `/api/backoffice/condomini/${adminId}`);
 export const boCreaCondo = (adminId, p) => request('POST', `/api/backoffice/condomini/${adminId}`, p);
+export const boUpdateCondo = (condoId, p) => request('PATCH', `/api/backoffice/condomini/${condoId}`, p);
+export const boDeleteCondo = (condoId) => request('DELETE', `/api/backoffice/condomini/${condoId}`);
 export const boGetAmministratori = () => request('GET', '/api/backoffice/admin');
 export const boGetAmministratore = (id) => request('GET', `/api/backoffice/admin/${id}`);
 export const boGetDocumentiAdmin = (id) => request('GET', `/api/backoffice/admin/${id}/documenti`);

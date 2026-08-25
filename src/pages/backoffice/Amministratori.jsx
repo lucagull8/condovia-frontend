@@ -1,10 +1,10 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Search, ChevronLeft, Building2, FileText, Wallet, User, Plus, Upload, X, Check, ExternalLink, Trash2, RefreshCw, KeyRound } from 'lucide-react';
+import { Search, ChevronLeft, Building2, FileText, Wallet, User, Plus, Upload, X, Check, ExternalLink, Trash2, RefreshCw, KeyRound, Pencil } from 'lucide-react';
 import { useVisibilityRefresh } from '../../hooks/useVisibilityRefresh';
 import { Badge } from '../../components/Shared';
 import {
   boGetAmministratori, boGetAmministratore,
-  boGetCondominiAdmin, boCreaCondo,
+  boGetCondominiAdmin, boCreaCondo, boUpdateCondo, boDeleteCondo,
   boGetDocumentiAdmin, boUploadDocumento, boGetDocumentoFileUrl,
   boGetAdminWallet, boAzzeraWallet, boPagaWallet, boGetRicevutaWalletUrl,
   boResetPassword,
@@ -34,10 +34,12 @@ export default function Amministratori() {
   const [walletData, setWalletData] = useState(null);
   const [ldDetail, setLdDetail] = useState(false);
 
-  // Modale aggiungi condominio
+  // Modale aggiungi/modifica condominio
   const [showCondoModal, setShowCondoModal] = useState(false);
   const [condoForm, setCondoForm] = useState({ nome: '', via: '', citta: '', unita: '', codiceFiscale: '' });
   const [condoSaving, setCondoSaving] = useState(false);
+  const [condoEditingId, setCondoEditingId] = useState(null);
+  const [condoDeleting, setCondoDeleting] = useState(null);
 
   // Upload documenti
   const [uploadTipo, setUploadTipo] = useState(null); // 'nomina' | 'bolletta'
@@ -88,17 +90,44 @@ export default function Amministratori() {
     try { setDocumenti(await boGetDocumentiAdmin(selected._id)); } catch {}
   };
 
-  // Aggiungi condominio
+  // Aggiungi / Modifica condominio
   const handleAddCondo = async () => {
     if (!condoForm.nome.trim()) { alert('Nome obbligatorio'); return; }
     setCondoSaving(true);
     try {
-      await boCreaCondo(selected._id, condoForm);
+      if (condoEditingId) {
+        await boUpdateCondo(condoEditingId, condoForm);
+      } else {
+        await boCreaCondo(selected._id, condoForm);
+      }
       await reloadCondomini();
       setShowCondoModal(false);
+      setCondoEditingId(null);
       setCondoForm({ nome: '', via: '', citta: '', unita: '', codiceFiscale: '' });
     } catch (e) { alert(e.message); }
     finally { setCondoSaving(false); }
+  };
+
+  const openEditCondo = (c) => {
+    setCondoEditingId(c._id);
+    setCondoForm({
+      nome: c.nome || '',
+      via: c.via || '',
+      citta: c.citta || '',
+      unita: c.unita || '',
+      codiceFiscale: c.codiceFiscale || '',
+    });
+    setShowCondoModal(true);
+  };
+
+  const handleDeleteCondo = async (c) => {
+    if (!confirm(`Eliminare il condominio "${c.nome}"?\nL'operazione non è reversibile.`)) return;
+    setCondoDeleting(c._id);
+    try {
+      await boDeleteCondo(c._id);
+      await reloadCondomini();
+    } catch (e) { alert(e.message); }
+    finally { setCondoDeleting(null); }
   };
 
   // Upload documento
@@ -286,10 +315,10 @@ export default function Amministratori() {
                 ) : (
                   <div style={{ border: '1px solid var(--border)', borderRadius: 16, background: 'var(--surface)', overflow: 'hidden' }}>
                     <div style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
-                    <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 480 }}>
+                    <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 540 }}>
                       <thead><tr style={{ background: 'var(--bg)' }}>
-                        {['Nome', 'Indirizzo', 'Città', 'Unità', 'CF'].map(h => (
-                          <th key={h} style={{ padding: '10px 14px', textAlign: 'left', fontSize: 11, fontWeight: 600, letterSpacing: '0.04em', textTransform: 'uppercase', color: 'var(--ink-soft)', borderBottom: '1px solid var(--border)', whiteSpace: 'nowrap' }}>{h}</th>
+                        {['Nome', 'Indirizzo', 'Città', 'Unità', 'CF', ''].map((h, i) => (
+                          <th key={i} style={{ padding: '10px 14px', textAlign: 'left', fontSize: 11, fontWeight: 600, letterSpacing: '0.04em', textTransform: 'uppercase', color: 'var(--ink-soft)', borderBottom: '1px solid var(--border)', whiteSpace: 'nowrap' }}>{h}</th>
                         ))}
                       </tr></thead>
                       <tbody>
@@ -300,6 +329,10 @@ export default function Amministratori() {
                             <td style={{ padding: '12px 14px', fontSize: 13 }}>{c.citta || '—'}</td>
                             <td style={{ padding: '12px 14px', fontSize: 13 }}>{c.unita || 0}</td>
                             <td style={{ padding: '12px 14px', fontSize: 13, color: 'var(--ink-soft)' }}>{c.codiceFiscale || '—'}</td>
+                            <td style={{ padding: '12px 14px', textAlign: 'right', whiteSpace: 'nowrap' }}>
+                              <button onClick={() => openEditCondo(c)} title="Modifica" style={{ background: 'transparent', border: 0, cursor: 'pointer', color: 'var(--ink-soft)', padding: 6, marginRight: 4 }}><Pencil size={15} /></button>
+                              <button onClick={() => handleDeleteCondo(c)} disabled={condoDeleting === c._id} title="Elimina" style={{ background: 'transparent', border: 0, cursor: 'pointer', color: '#c04040', padding: 6, opacity: condoDeleting === c._id ? 0.4 : 1 }}><Trash2 size={15} /></button>
+                            </td>
                           </tr>
                         ))}
                       </tbody>
@@ -453,10 +486,10 @@ export default function Amministratori() {
 
       {/* ═══ MODALE AGGIUNGI CONDOMINIO ═══ */}
       {showCondoModal && (
-        <div style={{ position: 'fixed', inset: 0, zIndex: 200, background: 'rgba(26,20,17,.55)', backdropFilter: 'blur(10px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }} onClick={() => setShowCondoModal(false)}>
+        <div style={{ position: 'fixed', inset: 0, zIndex: 200, background: 'rgba(26,20,17,.55)', backdropFilter: 'blur(10px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }} onClick={() => { setShowCondoModal(false); setCondoEditingId(null); setCondoForm({ nome: '', via: '', citta: '', unita: '', codiceFiscale: '' }); }}>
           <div style={{ width: '100%', maxWidth: 480, background: 'var(--surface)', borderRadius: 20, padding: '28px 24px', position: 'relative' }} onClick={e => e.stopPropagation()}>
-            <button onClick={() => setShowCondoModal(false)} style={{ position: 'absolute', top: 14, right: 14, width: 32, height: 32, borderRadius: 8, border: 0, background: 'transparent', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><X size={15} /></button>
-            <h2 style={{ fontFamily: 'Fraunces', fontWeight: 500, fontSize: 20, margin: '0 0 20px' }}>Aggiungi condominio</h2>
+            <button onClick={() => { setShowCondoModal(false); setCondoEditingId(null); setCondoForm({ nome: '', via: '', citta: '', unita: '', codiceFiscale: '' }); }} style={{ position: 'absolute', top: 14, right: 14, width: 32, height: 32, borderRadius: 8, border: 0, background: 'transparent', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><X size={15} /></button>
+            <h2 style={{ fontFamily: 'Fraunces', fontWeight: 500, fontSize: 20, margin: '0 0 20px' }}>{condoEditingId ? 'Modifica condominio' : 'Aggiungi condominio'}</h2>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
               {[
                 { k: 'nome', l: 'Nome *', ph: 'Residence Aventino' },
