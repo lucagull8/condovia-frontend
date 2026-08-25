@@ -1,10 +1,11 @@
-import{useState,useEffect}from'react';import{CircleCheckBig,CircleX,Clock,Mail,User,Calendar}from'lucide-react';import{boGetIscrizioni,boApprovaIscrizione,boRifiutaIscrizione}from'../../api';
+import{useState,useEffect,useCallback}from'react';import{CircleCheckBig,CircleX,Clock,Mail,User,Calendar}from'lucide-react';import{boGetIscrizioni,boApprovaIscrizione,boRifiutaIscrizione}from'../../api';import{useVisibilityRefresh}from'../../hooks/useVisibilityRefresh';
 const fD=d=>d?new Date(d).toLocaleDateString('it-IT',{day:'2-digit',month:'short',year:'numeric'}):'—';
 const fL=d=>d?new Date(d).toLocaleDateString('it-IT',{day:'2-digit',month:'long',year:'numeric'}):'—';
 export default function Iscrizioni(){const[tab,setTab]=useState('pending');const[data,setData]=useState([]);const[ld,setLd]=useState(true);const[counts,setCounts]=useState({pending:0,attivo:0,rifiutato:0});
 async function load(s){setLd(true);try{setData(await boGetIscrizioni(s));}finally{setLd(false);}}
 async function loadC(){const[p,a,r]=await Promise.all([boGetIscrizioni('pending'),boGetIscrizioni('attivo'),boGetIscrizioni('rifiutato')]);setCounts({pending:p.length,attivo:a.length,rifiutato:r.length});}
 useEffect(()=>{load(tab);loadC();},[tab]);
+useVisibilityRefresh(useCallback(()=>{load(tab);loadC();},[tab]));
 const approva=async id=>{setData(d=>d.map(u=>(u._id||u.id)===id?{...u,_b:true}:u));try{await boApprovaIscrizione(id);setData(d=>d.filter(u=>(u._id||u.id)!==id));setCounts(c=>({...c,pending:Math.max(0,c.pending-1),attivo:c.attivo+1}));}catch(e){alert(e.message);setData(d=>d.map(u=>(u._id||u.id)===id?{...u,_b:false}:u));}};
 const rifiuta=async id=>{if(!confirm('Confermi il rifiuto?'))return;setData(d=>d.map(u=>(u._id||u.id)===id?{...u,_b:true}:u));try{await boRifiutaIscrizione(id);setData(d=>d.filter(u=>(u._id||u.id)!==id));setCounts(c=>({...c,pending:Math.max(0,c.pending-1),rifiutato:c.rifiutato+1}));}catch(e){alert(e.message);setData(d=>d.map(u=>(u._id||u.id)===id?{...u,_b:false}:u));}};
 return<div style={{padding:'24px 20px 60px'}}><div style={{marginBottom:24}}>

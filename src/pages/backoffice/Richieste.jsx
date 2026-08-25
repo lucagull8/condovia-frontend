@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo, useCallback } from 'react';
 import { StickyNote, FileText, Upload, X, Check, AlertCircle, ChevronLeft, Plus, Trash2, RefreshCw } from 'lucide-react';
 import { Badge } from '../../components/Shared';
 import { BASE, boGetRichieste, boPatchRichiesta, boPostContratto, boGetServizi, boGetCondominiAdmin } from '../../api';
+import { useVisibilityRefresh } from '../../hooks/useVisibilityRefresh';
 
 const fmt = n => Number(n).toLocaleString('it-IT', { minimumFractionDigits: 2 });
 
@@ -41,6 +42,8 @@ export default function Richieste() {
       setServiziMap(m);
     });
   }, []);
+
+  useVisibilityRefresh(useCallback(() => setRefreshKey(k => k + 1), []));
 
   // Quando è selezionato un admin, carica le sue richieste (filtrate per stato)
   useEffect(() => {

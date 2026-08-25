@@ -1,9 +1,10 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { LayoutDashboard, Users, FileText, TrendingUp, Inbox, Receipt, UserPlus, LogOut, Menu, X, UserCircle } from 'lucide-react';
 import { LogoMark } from '../../components/Shared';
 import { useAuth } from '../../context/AuthContext';
 import { boGetDashboard } from '../../api';
+import { useVisibilityRefresh } from '../../hooks/useVisibilityRefresh';
 
 const NAV = [
   { label: 'Dashboard', to: '/backoffice', icon: LayoutDashboard },
@@ -24,9 +25,11 @@ export default function BackofficeLayout({ children }) {
   const doLogout = () => { logout(); nav('/backoffice/login'); };
   const displayName = utente ? `${utente.nome} ${utente.cognome}` : 'Commerciale';
 
-  useEffect(() => {
+  const refreshBadges = useCallback(() => {
     boGetDashboard().then(d => setBadges({ richieste: d.richiesteInAttesa || 0, iscrizioni: d.iscrizioniPending || 0, wallet: d.richiesteWalletPending || 0 })).catch(() => {});
-  }, [path]);
+  }, []);
+  useEffect(() => { refreshBadges(); }, [path, refreshBadges]);
+  useVisibilityRefresh(refreshBadges);
 
   const mainRef = useRef(null);
   useEffect(() => { mainRef.current?.scrollTo(0, 0); window.scrollTo(0, 0); }, [path]);

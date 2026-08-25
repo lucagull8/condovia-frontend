@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Search, ChevronLeft, Building2, FileText, Wallet, User, Plus, Upload, X, Check, ExternalLink, Trash2, RefreshCw, KeyRound } from 'lucide-react';
+import { useVisibilityRefresh } from '../../hooks/useVisibilityRefresh';
 import { Badge } from '../../components/Shared';
 import {
   boGetAmministratori, boGetAmministratore,
@@ -53,6 +54,7 @@ export default function Amministratori() {
     boGetAmministratori().then(setList).finally(() => { setLd(false); setRefreshing(false); });
   };
   useEffect(() => { loadList(); }, []);
+  useVisibilityRefresh(useCallback(() => { loadList(); }, []));
 
   const selectAdmin = async (admin) => {
     setSelected(admin);
