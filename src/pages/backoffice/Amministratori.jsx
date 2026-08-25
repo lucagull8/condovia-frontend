@@ -3,6 +3,7 @@ import { Search, ChevronLeft, Building2, FileText, Wallet, User, Plus, Upload, X
 import { useVisibilityRefresh } from '../../hooks/useVisibilityRefresh';
 import { Badge } from '../../components/Shared';
 import { AddressAutocomplete } from '../../components/AddressAutocomplete';
+import { ImportaCondominiModal } from '../../components/ImportaCondominiModal';
 import {
   boGetAmministratori, boGetAmministratore,
   boGetCondominiAdmin, boCreaCondo, boUpdateCondo, boDeleteCondo,
@@ -41,6 +42,7 @@ export default function Amministratori() {
   const [condoSaving, setCondoSaving] = useState(false);
   const [condoEditingId, setCondoEditingId] = useState(null);
   const [condoDeleting, setCondoDeleting] = useState(null);
+  const [showImportModal, setShowImportModal] = useState(false);
 
   // Upload documenti
   const [uploadTipo, setUploadTipo] = useState(null); // 'nomina' | 'bolletta'
@@ -306,7 +308,10 @@ export default function Amministratori() {
             {/* ── Condomini ── */}
             {tab === 'condomini' && (
               <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8, flexWrap: 'wrap' }}>
+                  <button onClick={() => setShowImportModal(true)} style={{ display: 'flex', alignItems: 'center', gap: 6, height: 38, padding: '0 14px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--bg)', fontSize: 13, fontWeight: 600, cursor: 'pointer', color: 'var(--copper-dark)' }}>
+                    <Upload size={14} /> Importa da Excel
+                  </button>
                   <button onClick={() => setShowCondoModal(true)} style={{ display: 'flex', alignItems: 'center', gap: 6, height: 38, padding: '0 14px', borderRadius: 10, border: 0, background: 'linear-gradient(180deg,#c8843f,#a06525)', color: '#fff', fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>
                     <Plus size={14} /> Aggiungi condominio
                   </button>
@@ -547,6 +552,15 @@ export default function Amministratori() {
             </div>
           </div>
         </div>
+      )}
+
+      {/* ═══ MODALE IMPORTA CONDOMINI DA EXCEL ═══ */}
+      {showImportModal && selected && (
+        <ImportaCondominiModal
+          adminId={selected._id}
+          onClose={() => setShowImportModal(false)}
+          onDone={() => reloadCondomini()}
+        />
       )}
     </>
   );
