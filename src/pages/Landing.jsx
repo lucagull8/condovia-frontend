@@ -25,6 +25,25 @@ export default function Landing() {
         </div>
       </div>
     </section>
+    <section style={{ maxWidth: 1200, margin: '0 auto 80px', width: '100%', padding: '0 24px' }}>
+      <div style={{ textAlign: 'center' }}>
+        <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--ink-soft)', marginBottom: 24 }}>I nostri partner</div>
+        <style>{`
+          .partner-logo{filter:grayscale(100%);opacity:.55;transition:filter .25s,opacity .25s;max-height:52px;width:auto;object-fit:contain}
+          .partner-logo:hover{filter:grayscale(0);opacity:1}
+        `}</style>
+        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: 'clamp(24px,5vw,56px)' }}>
+          {[
+            { src: '/partners/baiocco.png', alt: 'Baiocco Holding SPA' },
+            { src: '/partners/elti.png',    alt: 'E.L.T.I.' },
+            { src: '/partners/hexa.png',    alt: 'Gruppo Hexa' },
+            { src: '/partners/domova.png',  alt: 'Domova Gestioni' },
+          ].map(p => (
+            <img key={p.src} src={p.src} alt={p.alt} className="partner-logo" loading="lazy" />
+          ))}
+        </div>
+      </div>
+    </section>
     <Footer />
   </div>;
 }

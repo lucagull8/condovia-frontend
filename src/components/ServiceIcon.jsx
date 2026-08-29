@@ -1,25 +1,25 @@
-import { Zap, Flame, Droplets, Leaf, Sparkles, ArrowUpDown, DoorOpen, Shield, Thermometer, Wrench, Bolt, ClipboardList, ShieldCheck, HardHat, Camera, Calculator } from 'lucide-react';
+import {
+  HardHat, Lightbulb, Flame, DoorOpen, Droplets, ArrowUpDown,
+  Shield, ShieldCheck, Zap, Building2, Wrench, Camera, Sparkles, Leaf, Bolt, ClipboardList, Thermometer, Calculator,
+} from 'lucide-react';
 
-export const ICON_MAP = { Zap, Flame, Droplets, Leaf, Sparkles, ArrowUpDown, DoorOpen, Shield, Thermometer, Wrench, Bolt, ClipboardList, ShieldCheck, HardHat, Camera, Calculator };
+export const ICON_MAP = {
+  HardHat, Lightbulb, Flame, DoorOpen, Droplets, ArrowUpDown,
+  Shield, ShieldCheck, Zap, Building2, Wrench, Camera, Sparkles, Leaf, Bolt, ClipboardList, Thermometer, Calculator,
+};
 
+// Catalogo servizi ufficiali (allineato con SERVIZI_REALI del backend).
 export const SERVIZI_CATALOGO = [
-  { id: 'energia', label: 'Energia', color: '#f5a623', bg: '#fef3e2', icon: 'Zap' },
-  { id: 'gas', label: 'Gas', color: '#e8740c', bg: '#fde8d0', icon: 'Flame' },
-  { id: 'acque', label: 'Acque potabili', color: '#3b82f6', bg: '#dbeafe', icon: 'Droplets' },
-  { id: 'verde', label: 'Aree verdi', color: '#22c55e', bg: '#dcfce7', icon: 'Leaf' },
-  { id: 'pulizie', label: 'Pulizie scale', color: '#8b5cf6', bg: '#ede9fe', icon: 'Sparkles' },
-  { id: 'ascensore', label: 'Ascensore', color: '#92400e', bg: '#fef3c7', icon: 'ArrowUpDown' },
-  { id: 'cancelli', label: 'Cancelli', color: '#ef4444', bg: '#fee2e2', icon: 'DoorOpen' },
-  { id: 'antincendio', label: 'Antincendio', color: '#dc2626', bg: '#fde8d0', icon: 'Flame' },
-  { id: 'privacy', label: 'Privacy', color: '#64748b', bg: '#f1f5f9', icon: 'Shield' },
-  { id: 'termiche', label: 'Centrali termiche', color: '#f59e0b', bg: '#fef3c7', icon: 'Thermometer' },
-  { id: 'idraulica', label: 'Idraulica', color: '#0ea5e9', bg: '#e0f2fe', icon: 'Wrench' },
-  { id: 'elettrici', label: 'Impianti elettrici', color: '#eab308', bg: '#fefce8', icon: 'Bolt' },
-  { id: 'ras', label: 'RAS Condominio', color: '#4ade80', bg: '#f0fdf4', icon: 'ClipboardList' },
-  { id: 'assicurazione', label: 'Assicurazione', color: '#1e3a5f', bg: '#dde7ee', icon: 'ShieldCheck' },
-  { id: 'edilizia', label: 'Edilizia minore', color: '#b87333', bg: '#fbf3ea', icon: 'HardHat' },
-  { id: 'videosorveglianza', label: 'Videosorveglianza', color: '#6b7280', bg: '#f3f4f6', icon: 'Camera' },
-  { id: 'contabilita', label: 'Contabilità', color: '#7c3aed', bg: '#ede9fe', icon: 'Calculator' },
+  { id: 'edilizia',       label: 'Lavori edili e manutenzione',         color: '#b87333', bg: '#fbf3ea', icon: 'HardHat' },
+  { id: 'elettrici',      label: 'Impianti elettrici (luce)',           color: '#eab308', bg: '#fefce8', icon: 'Lightbulb' },
+  { id: 'gas',            label: 'Impianti gas',                        color: '#e8740c', bg: '#fde8d0', icon: 'Flame' },
+  { id: 'cancelli',       label: 'Cancelli automatici',                 color: '#dc2626', bg: '#fee2e2', icon: 'DoorOpen' },
+  { id: 'acque',          label: 'Acque potabili',                      color: '#3b82f6', bg: '#dbeafe', icon: 'Droplets' },
+  { id: 'ascensori',      label: 'Ascensori',                           color: '#92400e', bg: '#fef3c7', icon: 'ArrowUpDown' },
+  { id: 'privacy',        label: 'Privacy (GDPR)',                      color: '#64748b', bg: '#f1f5f9', icon: 'Shield' },
+  { id: 'messa-a-terra',  label: 'Messa a terra',                       color: '#f5a623', bg: '#fef3e2', icon: 'Zap' },
+  { id: 'immobiliari',    label: 'Servizi immobiliari',                 color: '#7c3aed', bg: '#ede9fe', icon: 'Building2' },
+  { id: 'assicurazione',  label: 'Assicurazione fabbricato',            color: '#1e3a5f', bg: '#dde7ee', icon: 'ShieldCheck' },
 ];
 
 function StatusDot({ status }) {
@@ -32,8 +32,8 @@ export function ServiceIcon({ service, size = 56, status }) {
   const Icon = ICON_MAP[service.icon] || Shield;
   return (
     <div style={{ position: 'relative', width: size, height: size }}>
-      <div style={{ width: size, height: size, borderRadius: Math.round(size * 0.28), background: service.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', opacity: status === 'no' ? 0.45 : 1 }}>
-        <Icon size={Math.round(size * 0.45)} color={service.color} strokeWidth={1.6} />
+      <div style={{ width: size, height: size, borderRadius: Math.round(size * 0.28), background: service.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', opacity: status === 'no' ? 0.55 : 1 }}>
+        <Icon size={Math.round(size * 0.48)} color={service.color} strokeWidth={2.1} />
       </div>
       {status && status !== 'no' && <StatusDot status={status} />}
     </div>

@@ -68,11 +68,24 @@ export default function ServizioDetail() {
         <div style={{ border: '1px solid var(--border)', borderRadius: 24, padding: 'clamp(20px,3vw,32px)', background: 'var(--surface)', marginBottom: 20 }}>
           <div style={{ display: 'flex', gap: 24, alignItems: 'flex-start', marginBottom: 24, flexWrap: 'wrap' }}>
             <div style={{ width: 88, height: 88, borderRadius: 22, flexShrink: 0, background: s.bg || cat.bg, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Icon size={40} color={s.color || cat.color} strokeWidth={1.5} />
+              <Icon size={42} color={s.color || cat.color} strokeWidth={2.1} />
             </div>
-            <div>
+            <div style={{ flex: 1, minWidth: 0 }}>
               <h1 style={{ fontFamily: 'Fraunces', fontWeight: 500, fontSize: 'clamp(24px,3vw,32px)', margin: '0 0 8px' }}>{s.titolo || s.label}</h1>
-              <p style={{ margin: 0, fontSize: 14, color: 'var(--ink-soft)', lineHeight: 1.6, maxWidth: 580 }}>{s.desc}</p>
+              <p style={{ margin: '0 0 14px', fontSize: 14, color: 'var(--ink-soft)', lineHeight: 1.6, maxWidth: 580 }}>{s.desc}</p>
+              {Array.isArray(s.sottoservizi) && s.sottoservizi.length > 0 && (
+                <div style={{ marginTop: 4 }}>
+                  <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--copper-dark)', marginBottom: 8 }}>Cosa include</div>
+                  <ul style={{ margin: 0, padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 6 }}>
+                    {s.sottoservizi.map((ss, i) => (
+                      <li key={i} style={{ display: 'flex', gap: 10, fontSize: 13.5, color: 'var(--ink)', lineHeight: 1.5 }}>
+                        <span style={{ flexShrink: 0, width: 6, height: 6, borderRadius: '50%', background: s.color || cat.color, marginTop: 8 }} />
+                        <span>{ss}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
           </div>
 
