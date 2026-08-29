@@ -34,10 +34,10 @@ export default function Landing() {
         `}</style>
         <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: 'clamp(24px,5vw,56px)' }}>
           {[
-            { src: '/partners/baiocco.png', alt: 'Baiocco Holding SPA' },
-            { src: '/partners/elti.png',    alt: 'E.L.T.I.' },
-            { src: '/partners/hexa.png',    alt: 'Gruppo Hexa' },
-            { src: '/partners/domova.png',  alt: 'Domova Gestioni' },
+            { src: '/partners/baiocco.jpg', alt: 'Baiocco Holding SPA' },
+            { src: '/partners/elti.jpg',    alt: 'E.L.T.I.' },
+            { src: '/partners/hexa.jpg',    alt: 'Gruppo Hexa' },
+            { src: '/partners/domova.jpg',  alt: 'Domova Gestioni' },
           ].map(p => (
             <img key={p.src} src={p.src} alt={p.alt} className="partner-logo" loading="lazy" />
           ))}
