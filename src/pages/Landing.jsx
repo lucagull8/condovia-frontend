@@ -25,22 +25,24 @@ export default function Landing() {
         </div>
       </div>
     </section>
-    <section style={{ maxWidth: 1200, margin: '0 auto 80px', width: '100%', padding: '0 24px' }}>
+    <section style={{ maxWidth: 1000, margin: '0 auto 80px', width: '100%', padding: '0 24px' }}>
       <div style={{ textAlign: 'center' }}>
-        <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--ink-soft)', marginBottom: 24 }}>I nostri partner</div>
+        <div style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--ink-soft)', marginBottom: 18 }}>I nostri partner</div>
         <style>{`
-          .partner-logo{filter:grayscale(100%);opacity:.55;transition:filter .25s,opacity .25s;max-height:52px;width:auto;object-fit:contain}
-          .partner-logo:hover{filter:grayscale(0);opacity:1}
+          .pcard{display:flex;align-items:center;justify-content:center;background:#fff;border:1px solid var(--border);border-radius:12px;width:132px;height:64px;padding:10px 14px;transition:transform .2s,box-shadow .2s}
+          .pcard:hover{transform:translateY(-1px);box-shadow:0 4px 14px -6px rgba(31,29,33,.14)}
+          .pcard img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;display:block}
+          .pcard img.baiocco{max-height:44px}
+          .pcard img.elti{max-height:28px}
+          .pcard img.domova{max-height:26px}
+          .pcard img.hexa{max-height:56px;border-radius:6px}
+          @media(max-width:520px){.pcard{width:120px;height:56px}}
         `}</style>
-        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: 'clamp(24px,5vw,56px)' }}>
-          {[
-            { src: '/partners/baiocco.jpg', alt: 'Baiocco Holding SPA' },
-            { src: '/partners/elti.jpg',    alt: 'E.L.T.I.' },
-            { src: '/partners/hexa.jpg',    alt: 'Gruppo Hexa' },
-            { src: '/partners/domova.jpg',  alt: 'Domova Gestioni' },
-          ].map(p => (
-            <img key={p.src} src={p.src} alt={p.alt} className="partner-logo" loading="lazy" />
-          ))}
+        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: 14 }}>
+          <div className="pcard" title="Baiocco Holding SPA"><img className="baiocco" src="/partners/baiocco.jpg" alt="Baiocco Holding SPA" loading="lazy" /></div>
+          <div className="pcard" title="E.L.T.I."><img className="elti" src="/partners/elti.jpg" alt="E.L.T.I." loading="lazy" /></div>
+          <div className="pcard" title="Gruppo Hexa"><img className="hexa" src="/partners/hexa.jpg" alt="Gruppo Hexa" loading="lazy" /></div>
+          <div className="pcard" title="Domova Gestioni"><img className="domova" src="/partners/domova.jpg" alt="Domova Gestioni" loading="lazy" /></div>
         </div>
       </div>
     </section>

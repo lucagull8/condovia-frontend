@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link, useParams, Navigate } from 'react-router-dom';
-import { CircleCheckBig, TriangleAlert, Plus, Send, Shield, FileDown, Calendar, Building2, User } from 'lucide-react';
+import { CircleCheckBig, TriangleAlert, Plus, Send, FileDown, Calendar, Building2, User } from 'lucide-react';
 import { Header, Footer, Badge } from '../components/Shared';
-import { ICON_MAP, findServiceCatalog } from '../components/ServiceIcon';
+import { ServiceIcon, findServiceCatalog } from '../components/ServiceIcon';
 import { getServizio, getCondomini, creaRichiesta, BASE } from '../api';
 
 const fmt = n => Number(n).toLocaleString('it-IT', { minimumFractionDigits: 2 });
@@ -37,7 +37,6 @@ export default function ServizioDetail() {
   if (errore || !s) return <Navigate to="/home" replace />;
 
   const cat = findServiceCatalog(id);
-  const Icon = ICON_MAP[s.icon || cat.icon] || Shield;
   const status = s.status || 'no';
   const days = daysLeft(s.dataScadenza);
   const coperti = s.condominicoperti || [];
@@ -67,9 +66,7 @@ export default function ServizioDetail() {
         {/* ═══ HEADER CARD ═══ */}
         <div style={{ border: '1px solid var(--border)', borderRadius: 24, padding: 'clamp(20px,3vw,32px)', background: 'var(--surface)', marginBottom: 20 }}>
           <div style={{ display: 'flex', gap: 24, alignItems: 'flex-start', marginBottom: 24, flexWrap: 'wrap' }}>
-            <div style={{ width: 88, height: 88, borderRadius: 22, flexShrink: 0, background: s.bg || cat.bg, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Icon size={42} color={s.color || cat.color} strokeWidth={2.1} />
-            </div>
+            <ServiceIcon service={{ id: s.sid || id, ...cat }} size={88} />
             <div style={{ flex: 1, minWidth: 0 }}>
               <h1 style={{ fontFamily: 'Fraunces', fontWeight: 500, fontSize: 'clamp(24px,3vw,32px)', margin: '0 0 8px' }}>{s.titolo || s.label}</h1>
               <p style={{ margin: '0 0 14px', fontSize: 14, color: 'var(--ink-soft)', lineHeight: 1.6, maxWidth: 580 }}>{s.desc}</p>
