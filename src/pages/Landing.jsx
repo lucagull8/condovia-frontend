@@ -29,15 +29,15 @@ export default function Landing() {
       <div style={{ textAlign: 'center' }}>
         <div style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--ink-soft)', marginBottom: 18 }}>I nostri partner</div>
         <style>{`
-          .pcard{position:relative;display:flex;align-items:center;justify-content:center;background:#fff;border:1px solid var(--border);border-radius:12px;width:132px;height:64px;padding:10px 14px;overflow:hidden;transition:transform .2s,box-shadow .2s}
+          .pcard{position:relative;display:flex;align-items:center;justify-content:center;background:#fff;border:1px solid var(--border);border-radius:12px;width:140px;height:72px;padding:6px 14px;overflow:hidden;transition:transform .2s,box-shadow .2s}
           .pcard:hover{transform:translateY(-1px);box-shadow:0 4px 14px -6px rgba(31,29,33,.14)}
           .pcard img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;display:block}
-          .pcard img.baiocco{max-height:44px}
-          .pcard img.elti{max-height:28px}
-          .pcard img.domova{max-height:54px}
+          .pcard img.baiocco{max-height:58px}
+          .pcard img.elti{max-height:32px}
+          .pcard img.domova{max-height:60px}
           .pcard.hexa-card{padding:0;border-color:transparent}
           .pcard.hexa-card img{position:absolute;inset:0;width:100%;height:100%;max-height:none;object-fit:cover}
-          @media(max-width:520px){.pcard{width:120px;height:56px}}
+          @media(max-width:520px){.pcard{width:124px;height:64px}}
         `}</style>
         <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: 14 }}>
           <div className="pcard" title="Baiocco Holding SPA"><img className="baiocco" src="/partners/baiocco.jpg" alt="Baiocco Holding SPA" loading="lazy" /></div>
