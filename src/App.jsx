@@ -14,6 +14,7 @@ const ServizioDetail = lazy(() => import('./pages/ServizioDetail'));
 const Profilo = lazy(() => import('./pages/Profilo'));
 const Condomini = lazy(() => import('./pages/Condomini'));
 const CondominioDetail = lazy(() => import('./pages/CondominioDetail'));
+const Documenti = lazy(() => import('./pages/Documenti'));
 const BackofficeLogin = lazy(() => import('./pages/backoffice/BackofficeLogin'));
 const Dashboard = lazy(() => import('./pages/backoffice/Dashboard'));
 const Amministratori = lazy(() => import('./pages/backoffice/Amministratori'));
@@ -41,6 +42,7 @@ export default function App() {
             <Route path="/profilo" element={<RequireAdmin><Profilo /></RequireAdmin>} />
             <Route path="/condomini" element={<RequireAdmin><Condomini /></RequireAdmin>} />
             <Route path="/condomini/:id" element={<RequireAdmin><CondominioDetail /></RequireAdmin>} />
+            <Route path="/documenti" element={<RequireAdmin><Documenti /></RequireAdmin>} />
             <Route path="/servizio/:id" element={<RequireAdmin><ServizioDetail /></RequireAdmin>} />
             <Route path="/backoffice" element={<RequireCommerciale><BackofficeLayout><Dashboard /></BackofficeLayout></RequireCommerciale>} />
             <Route path="/backoffice/amministratori" element={<RequireCommerciale><BackofficeLayout><Amministratori /></BackofficeLayout></RequireCommerciale>} />

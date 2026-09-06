@@ -82,6 +82,11 @@ export const boGetAmministratore = (id) => request('GET', `/api/backoffice/admin
 export const boGetDocumentiAdmin = (id) => request('GET', `/api/backoffice/admin/${id}/documenti`);
 export const boUploadDocumento = (adminId, fd) => upload('POST', `/api/backoffice/admin/${adminId}/documenti`, fd);
 export const boGetDocumentoFileUrl = (adminId, tipo) => `${BASE}/api/backoffice/admin/${adminId}/documento/${tipo}/file?token=${getToken()}`;
+export const boGetDocumentoByIdUrl = (adminId, docId) => `${BASE}/api/backoffice/admin/${adminId}/documenti/${docId}/file?token=${getToken()}`;
+export const boDeleteDocumento = (adminId, docId) => request('DELETE', `/api/backoffice/admin/${adminId}/documenti/${docId}`);
+// Lato amministratore
+export const getMieiDocumenti = () => request('GET', '/api/documenti');
+export const getMioDocumentoUrl = (id) => `${BASE}/api/documenti/${id}/file?token=${getToken()}`;
 export const boGetAdminWallet = (id) => request('GET', `/api/backoffice/admin/${id}/wallet`);
 export const boAzzeraWallet = (id) => request('POST', `/api/backoffice/admin/${id}/wallet/azzera`, {});
 export const boPagaWallet = (adminId, fd) => upload('POST', `/api/backoffice/admin/${adminId}/wallet/paga`, fd);

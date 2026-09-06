@@ -4,10 +4,11 @@ import { useVisibilityRefresh } from '../../hooks/useVisibilityRefresh';
 import { Badge } from '../../components/Shared';
 import { AddressAutocomplete } from '../../components/AddressAutocomplete';
 import { ImportaCondominiModal } from '../../components/ImportaCondominiModal';
+import { DocumentiPanel } from '../../components/DocumentiPanel';
 import {
   boGetAmministratori, boGetAmministratore,
   boGetCondominiAdmin, boCreaCondo, boUpdateCondo, boDeleteCondo,
-  boGetDocumentiAdmin, boUploadDocumento, boGetDocumentoFileUrl,
+  boGetDocumentiAdmin, boUploadDocumento, boGetDocumentoFileUrl, boGetDocumentoByIdUrl, boDeleteDocumento,
   boGetAdminWallet, boAzzeraWallet, boPagaWallet, boGetRicevutaWalletUrl,
   boResetPassword,
   BASE,
@@ -400,6 +401,46 @@ export default function Amministratori() {
                     </div>
                   </div>
                 )}
+
+                {/* ── Contratti con fornitori ── */}
+                <div style={{ height: 1, background: 'var(--border)', margin: '8px 0' }} />
+                <DocumentiPanel
+                  titolo="Contratti (amministratore ↔ fornitore)"
+                  tipo="contratto"
+                  docs={documenti.filter(d => d.tipo === 'contratto')}
+                  fileUrl={d => boGetDocumentoByIdUrl(selected._id, d._id)}
+                  onUpload={async (file, tit, data) => {
+                    const fd = new FormData();
+                    fd.append('tipo', 'contratto');
+                    fd.append('file', file);
+                    if (tit) fd.append('titolo', tit);
+                    if (data) fd.append('dataDocumento', data);
+                    await boUploadDocumento(selected._id, fd);
+                    await reloadDocumenti();
+                  }}
+                  onDelete={async (docId) => { await boDeleteDocumento(selected._id, docId); await reloadDocumenti(); }}
+                  emptyText="Nessun contratto caricato. Usa il bottone qui sopra per aggiungerne."
+                />
+
+                {/* ── Fatture ── */}
+                <DocumentiPanel
+                  titolo="Fatture"
+                  tipo="fattura"
+                  docs={documenti.filter(d => d.tipo === 'fattura')}
+                  fileUrl={d => boGetDocumentoByIdUrl(selected._id, d._id)}
+                  filtroPerMese
+                  onUpload={async (file, tit, data) => {
+                    const fd = new FormData();
+                    fd.append('tipo', 'fattura');
+                    fd.append('file', file);
+                    if (tit) fd.append('titolo', tit);
+                    if (data) fd.append('dataDocumento', data);
+                    await boUploadDocumento(selected._id, fd);
+                    await reloadDocumenti();
+                  }}
+                  onDelete={async (docId) => { await boDeleteDocumento(selected._id, docId); await reloadDocumenti(); }}
+                  emptyText="Nessuna fattura caricata. Usa il bottone qui sopra per aggiungerne."
+                />
               </div>
             )}
 

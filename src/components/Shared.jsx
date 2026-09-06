@@ -29,7 +29,7 @@ export function Header({ isPublic = false }) {
   const initials = utente ? `${utente.nome?.[0] ?? ''}${utente.cognome?.[0] ?? ''}`.toUpperCase() : '';
   const displayName = utente ? `${utente.nome} ${utente.cognome?.[0]}.` : '';
   const doLogout = () => { logout(); nav('/'); };
-  const NAV = [{ label: 'Home', to: '/home' }, { label: 'Wallet', to: '/wallet' }, { label: 'Scadenze', to: '/scadenze' }];
+  const NAV = [{ label: 'Home', to: '/home' }, { label: 'Wallet', to: '/wallet' }, { label: 'Scadenze', to: '/scadenze' }, { label: 'Documenti', to: '/documenti' }];
   return (
     <>
       <style>{`
