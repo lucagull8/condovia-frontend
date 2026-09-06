@@ -85,12 +85,12 @@ export default function BackofficeLayout({ children }) {
           html,body{overflow-x:hidden !important;max-width:100vw !important}
           .bo-sidebar{display:none !important}
           .bo-overlay{display:block !important}
-          .bo-topbar{display:flex !important}
+          .bo-topbar{display:flex !important;height:calc(56px + env(safe-area-inset-top,0px)) !important;padding-top:env(safe-area-inset-top,0px) !important}
           .bo-close{display:block !important}
-          .bo-drawer{display:flex !important}
-          .bo-main{margin-left:0 !important;padding-top:56px !important;padding-bottom:max(24px,env(safe-area-inset-bottom,0px)) !important;overflow:unset !important;max-width:100vw !important}
-          .bo-sticky-hdr{top:56px !important}
-          .bo-tab-bar{top:116px !important}
+          .bo-drawer{display:flex !important;padding-top:env(safe-area-inset-top,0px)}
+          .bo-main{margin-left:0 !important;padding-top:calc(56px + env(safe-area-inset-top,0px)) !important;padding-bottom:max(24px,env(safe-area-inset-bottom,0px)) !important;overflow:unset !important;max-width:100vw !important}
+          .bo-sticky-hdr{top:calc(56px + env(safe-area-inset-top,0px)) !important}
+          .bo-tab-bar{top:calc(116px + env(safe-area-inset-top,0px)) !important}
           .bo-page-pad{padding:16px !important}
           .bo-two-col{flex-direction:column !important}
           .bo-two-col-list{width:100% !important;max-height:280px !important;border-right:none !important;border-bottom:1px solid var(--border) !important}

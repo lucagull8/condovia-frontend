@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { SERVIZI_CATALOGO } from '../components/ServiceIcon';
 import { useLandingMotion } from '../hooks/useLandingMotion';
@@ -321,6 +322,22 @@ const NUM_SERVIZI = SERVIZI_CATALOGO.length;
 
 export default function Landing() {
   useLandingMotion();
+
+  // In PWA su iOS l'overscroll bounce rivela il body: durante la landing
+  // lo tingiamo scuro come l'hero, poi al unmount ripristiniamo il chiaro.
+  useEffect(() => {
+    const prevHtml = document.documentElement.style.background;
+    const prevBody = document.body.style.background;
+    const prevOverscroll = document.body.style.overscrollBehavior;
+    document.documentElement.style.background = '#1e1815';
+    document.body.style.background = '#1e1815';
+    document.body.style.overscrollBehavior = 'none';
+    return () => {
+      document.documentElement.style.background = prevHtml;
+      document.body.style.background = prevBody;
+      document.body.style.overscrollBehavior = prevOverscroll;
+    };
+  }, []);
 
   const marqueeItems = [...SERVIZI_CATALOGO, ...SERVIZI_CATALOGO]; // doppia lista per il loop
 

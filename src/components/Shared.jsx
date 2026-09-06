@@ -47,7 +47,7 @@ export function Header({ isPublic = false }) {
           .hdr-page-pad{padding-bottom:64px}
         }
       `}</style>
-      <header style={{ position: 'sticky', top: 0, zIndex: 50, background: 'rgba(250,250,247,.92)', backdropFilter: 'blur(12px)', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', gap: 16, padding: '0 20px', height: 60 }}>
+      <header style={{ position: 'sticky', top: 0, zIndex: 50, background: 'rgba(250,250,247,.92)', backdropFilter: 'blur(12px)', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', gap: 16, padding: '0 20px', height: 60, paddingTop: 'env(safe-area-inset-top,0px)', boxSizing: 'content-box' }}>
         <Link to={isPublic ? '/' : '/home'} style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
           <LogoMark size={28} />
           <span style={{ fontFamily: 'Fraunces', fontSize: 17, fontWeight: 500 }}>CONDOVIA</span>
