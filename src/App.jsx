@@ -5,6 +5,7 @@ import { RequireAdmin, RequireCommerciale } from './components/Guards';
 import { LoadingScreen } from './components/Shared';
 
 const Landing = lazy(() => import('./pages/Landing'));
+const LandingV2 = lazy(() => import('./pages/LandingV2'));
 const Login = lazy(() => import('./pages/Login'));
 const Register = lazy(() => import('./pages/Register'));
 const Home = lazy(() => import('./pages/Home'));
@@ -33,6 +34,7 @@ export default function App() {
         <Suspense fallback={<LoadingScreen />}>
           <Routes>
             <Route path="/" element={<Landing />} />
+            <Route path="/v2" element={<LandingV2 />} />
             <Route path="/login" element={<Login />} />
             <Route path="/registrati" element={<Register />} />
             <Route path="/backoffice/login" element={<BackofficeLogin />} />
