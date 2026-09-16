@@ -94,6 +94,8 @@ export const boGetRichiesteWallet = () => request('GET', '/api/backoffice/richie
 export const boGetRicevutaWalletUrl = (id) => `${BASE}/api/backoffice/richieste-wallet/${id}/ricevuta?token=${getToken()}`;
 export const boGetContratti = (adminId) => request('GET', `/api/backoffice/contratti${adminId ? `?adminId=${adminId}` : ''}`);
 export const boPostContratto = (fd) => upload('POST', '/api/backoffice/contratti', fd);
+export const boPatchContratto = (id, fd) => upload('PATCH', `/api/backoffice/contratti/${id}`, fd);
+export const boDeleteContratto = (id) => request('DELETE', `/api/backoffice/contratti/${id}`);
 export const boGetContrattoFileUrl = (id) => `${BASE}/api/backoffice/contratti/${id}/pdf?token=${getToken()}`;
 export const boGetRichieste = (stato, adminId) => {
   const params = [];

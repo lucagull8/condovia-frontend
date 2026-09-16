@@ -1,8 +1,8 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
-import { Plus, X, Check, FileText, Upload, Search, ChevronUp, ChevronDown, ChevronsLeft, ChevronsRight } from 'lucide-react';
+import { Plus, X, Check, FileText, Upload, Search, ChevronUp, ChevronDown, ChevronsLeft, ChevronsRight, Pencil, Trash2 } from 'lucide-react';
 import { Badge } from '../../components/Shared';
 import { useVisibilityRefresh } from '../../hooks/useVisibilityRefresh';
-import { boGetContratti, boGetContrattoFileUrl, boPostContratto, boGetAmministratori, boGetCondominiAdmin, boGetServizi } from '../../api';
+import { boGetContratti, boGetContrattoFileUrl, boPostContratto, boPatchContratto, boDeleteContratto, boGetAmministratori, boGetCondominiAdmin, boGetServizi } from '../../api';
 
 const fmt = n => Number(n).toLocaleString('it-IT', { minimumFractionDigits: 2 });
 const fmtD = d => d ? new Date(d).toLocaleDateString('it-IT', { day: '2-digit', month: 'short', year: 'numeric' }) : '—';
@@ -32,6 +32,8 @@ export default function Contratti() {
 
   // Modale
   const [showModal, setShowModal] = useState(false);
+  const [editingId, setEditingId] = useState(null); // id contratto in modifica
+  const [deleting, setDeleting] = useState(null);
   const [admins, setAdmins] = useState([]);
   const [servizi, setServizi] = useState([]);
   const [condomini, setCondomini] = useState([]);
@@ -125,7 +127,7 @@ export default function Contratti() {
   const hasActive = q || filtroStato || filtroAdmin || filtroServizio;
 
   const openModal = async () => {
-    setSaveErr(''); setPdf(null);
+    setSaveErr(''); setPdf(null); setEditingId(null);
     setForm({ amministratoreId: '', condominioId: '', servizioId: '', fornitore: '', commissioneCondovia: '', stornoTipo: 'fix', stornoValore: '', dataInizio: todayISO(), dataScadenza: inYear() });
     setShowModal(true);
     try {
@@ -133,6 +135,38 @@ export default function Contratti() {
       setAdmins(a);
       setServizi(s);
     } catch (e) { setSaveErr(e.message); }
+  };
+
+  const openEdit = async (c) => {
+    setSaveErr(''); setPdf(null); setEditingId(c._id);
+    const iso = d => d ? new Date(d).toISOString().split('T')[0] : '';
+    setForm({
+      amministratoreId: c.amministratoreId?._id || c.amministratoreId || '',
+      condominioId: c.condominioId?._id || c.condominioId || '',
+      servizioId: c.servizioId || '',
+      fornitore: c.fornitore || '',
+      commissioneCondovia: c.commissioneCondovia ?? '',
+      stornoTipo: c.stornoTipo || 'fix',
+      stornoValore: c.stornoValore ?? '',
+      dataInizio: iso(c.dataInizio),
+      dataScadenza: iso(c.dataScadenza),
+    });
+    setShowModal(true);
+    try {
+      const [a, s] = await Promise.all([boGetAmministratori(), boGetServizi()]);
+      setAdmins(a);
+      setServizi(s);
+    } catch (e) { setSaveErr(e.message); }
+  };
+
+  const handleDelete = async (c) => {
+    if (!confirm(`Eliminare il contratto ${c.servizioId} - ${c.fornitore} (${c.condominioId?.nome || ''})? L'operazione decurta anche lo storno accreditato all'admin.`)) return;
+    setDeleting(c._id);
+    try {
+      await boDeleteContratto(c._id);
+      setRefreshKey(k => k + 1);
+    } catch (e) { alert(e.message); }
+    finally { setDeleting(null); }
   };
 
   useEffect(() => {
@@ -160,8 +194,10 @@ export default function Contratti() {
       fd.append('dataInizio', form.dataInizio);
       fd.append('dataScadenza', form.dataScadenza);
       if (pdf) fd.append('pdf', pdf);
-      await boPostContratto(fd);
-      setShowModal(false);
+      if (editingId) await boPatchContratto(editingId, fd);
+      else await boPostContratto(fd);
+      { setShowModal(false); setEditingId(null); };
+      setEditingId(null);
       setRefreshKey(k => k + 1);
     } catch (e) {
       setSaveErr(e.message);
@@ -234,6 +270,7 @@ export default function Contratti() {
                   <SortHead id="dataScadenza">Scadenza</SortHead>
                   <SortHead id="stato">Stato</SortHead>
                   <th style={{ padding: '10px 14px', textAlign: 'left', fontSize: 11, fontWeight: 600, letterSpacing: '0.04em', textTransform: 'uppercase', color: 'var(--ink-soft)', borderBottom: '1px solid var(--border)', whiteSpace: 'nowrap' }}>PDF</th>
+                  <th style={{ padding: '10px 14px', textAlign: 'right', fontSize: 11, fontWeight: 600, letterSpacing: '0.04em', textTransform: 'uppercase', color: 'var(--ink-soft)', borderBottom: '1px solid var(--border)', whiteSpace: 'nowrap' }}></th>
                 </tr></thead>
                 <tbody>{visiblePage.map(c => (
                   <tr key={c._id} style={{ borderBottom: '1px solid var(--border)' }}>
@@ -254,6 +291,10 @@ export default function Contratti() {
                       ) : (
                         <span style={{ fontSize: 12, color: 'var(--ink-soft)' }}>—</span>
                       )}
+                    </td>
+                    <td style={{ padding: '11px 14px', textAlign: 'right', whiteSpace: 'nowrap' }}>
+                      <button onClick={() => openEdit(c)} title="Modifica" style={{ background: 'transparent', border: 0, cursor: 'pointer', color: 'var(--ink-soft)', padding: 6, marginRight: 2 }}><Pencil size={15} /></button>
+                      <button onClick={() => handleDelete(c)} disabled={deleting === c._id} title="Elimina" style={{ background: 'transparent', border: 0, cursor: 'pointer', color: '#c04040', padding: 6, opacity: deleting === c._id ? 0.4 : 1 }}><Trash2 size={15} /></button>
                     </td>
                   </tr>
                 ))}</tbody>
@@ -277,11 +318,11 @@ export default function Contratti() {
       </div>
 
       {showModal && (
-        <div style={{ position: 'fixed', inset: 0, zIndex: 200, background: 'rgba(26,20,17,.55)', backdropFilter: 'blur(10px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }} onClick={() => setShowModal(false)}>
+        <div style={{ position: 'fixed', inset: 0, zIndex: 200, background: 'rgba(26,20,17,.55)', backdropFilter: 'blur(10px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }} onClick={() => { setShowModal(false); setEditingId(null); }}>
           <div style={{ width: '100%', maxWidth: 560, maxHeight: '90vh', background: 'var(--surface)', borderRadius: 20, padding: '28px 24px', position: 'relative', overflow: 'auto' }} onClick={e => e.stopPropagation()}>
-            <button onClick={() => setShowModal(false)} style={{ position: 'absolute', top: 14, right: 14, width: 32, height: 32, borderRadius: 8, border: 0, background: 'transparent', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><X size={15} /></button>
-            <h2 style={{ fontFamily: 'Fraunces', fontWeight: 500, fontSize: 20, margin: '0 0 6px' }}>Nuovo contratto</h2>
-            <p style={{ margin: '0 0 20px', fontSize: 13, color: 'var(--ink-soft)' }}>Crea un contratto senza passare da una richiesta.</p>
+            <button onClick={() => { setShowModal(false); setEditingId(null); }} style={{ position: 'absolute', top: 14, right: 14, width: 32, height: 32, borderRadius: 8, border: 0, background: 'transparent', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><X size={15} /></button>
+            <h2 style={{ fontFamily: 'Fraunces', fontWeight: 500, fontSize: 20, margin: '0 0 6px' }}>{editingId ? 'Modifica contratto' : 'Nuovo contratto'}</h2>
+            <p style={{ margin: '0 0 20px', fontSize: 13, color: 'var(--ink-soft)' }}>{editingId ? 'Aggiorna i campi del contratto. Se modifichi commissione o storno, il saldo dell\'admin viene ricalcolato automaticamente.' : 'Crea un contratto senza passare da una richiesta.'}</p>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
               <div>
@@ -342,7 +383,7 @@ export default function Contratti() {
               </div>
 
               <div>
-                <label style={lbl}>PDF del contratto (opzionale)</label>
+                <label style={lbl}>PDF del contratto (opzionale){editingId ? ' - lascia vuoto per mantenere il PDF attuale' : ''}</label>
                 <label style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, height: 44, borderRadius: 10, border: '1.5px dashed var(--border)', background: 'var(--bg)', fontSize: 13, color: 'var(--ink-soft)', cursor: 'pointer' }}>
                   <Upload size={14} /> {pdf ? pdf.name : 'Carica PDF'}
                   <input type="file" accept=".pdf" onChange={e => setPdf(e.target.files[0])} style={{ display: 'none' }} />
@@ -354,7 +395,7 @@ export default function Contratti() {
               )}
 
               <button onClick={submit} disabled={saving} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, height: 46, borderRadius: 12, border: 0, background: 'linear-gradient(180deg,#c8843f,#a06525)', color: '#fff', fontSize: 14, fontWeight: 600, cursor: 'pointer', opacity: saving ? 0.6 : 1 }}>
-                <Check size={15} /> {saving ? 'Creazione…' : 'Crea contratto'}
+                <Check size={15} /> {saving ? 'Salvataggio…' : (editingId ? 'Salva modifiche' : 'Crea contratto')}
               </button>
             </div>
           </div>
